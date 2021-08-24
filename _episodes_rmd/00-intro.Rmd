@@ -1,7 +1,7 @@
 ---
 title: "Before we Start"
-teaching: 25
-exercises: 15
+teaching: 10
+exercises: 5
 questions:
 - "How to find your way around RStudio?"
 - "How to interact with R?"
@@ -37,8 +37,7 @@ RStudio needs R and therefore both need to be installed on your computer.
 
 To make it easier to interact with R, we will use RStudio. RStudio is the most
 popular IDE (Integrated Development Environmemt) for R. An IDE is a piece of
-software that provides
-tools to make programming easier.
+software that provides tools to make programming easier.
 
 
 ## Why learn R?
@@ -73,7 +72,7 @@ reproducible, so knowing R will give you an edge with these requirements.
 
 ### R is interdisciplinary and extensible
 
-With 10,000+ packages that can be installed to extend its capabilities, R
+With 18,000+ packages that can be installed to extend its capabilities, R
 provides a framework that allows you to combine statistical approaches from many
 scientific disciplines to best suit the analytical framework you need to analyze
 your data. For instance, R has packages for image analysis, GIS, time series,
@@ -263,31 +262,6 @@ project, it is likely that you opened an R script or RMarkdown file **not** your
 double clicking on the blue cube! 
 
 
-### Downloading the data and getting set up
-
-For this lesson we will use the following folders in our working directory:
-**`data/`**, **`data_output/`** and **`fig_output/`**. Let's write them all in
-lowercase to be consistent. We can create them using the RStudio interface by
-clicking on the "New Folder" button in the file pane (bottom right), or directly
-from R by typing at console:
-
-```{r create-dirs, eval = FALSE}
-dir.create("data")
-dir.create("data_output")
-dir.create("fig_output")
-```
-
-Go to the Figshare page for this curriculum and download the dataset called
-"`SAFI_clean.csv`". The direct download link is:
-<https://ndownloader.figshare.com/files/11492171>. Place this downloaded file in
-the `data/` you just created. You can do this directly from R by copying and
-pasting this in your terminal (your instructor can place this chunk of code in
-the Etherpad):
-
-```{r download-data, eval = FALSE}
-download.file("https://ndownloader.figshare.com/files/11492171",
-              "data/SAFI_clean.csv", mode = "wb")
-```
 
 
 ## Interacting with R
@@ -349,7 +323,7 @@ the command(s) you entered and correct the error.
 ## Installing additional packages using the packages tab
 
 In addition to the core R installation, there are in excess of
-10,000 additional packages which can be used to extend the
+18,000 additional packages which can be used to extend the
 functionality of R. Many of these have been written by R users and
 have been made available in central repositories, like the one
 hosted at CRAN, for anyone to download and install into their own R

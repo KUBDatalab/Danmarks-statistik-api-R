@@ -1,5 +1,5 @@
 ---
-title: "Getting started with R Markdown (Optional)"
+title: "What is an API?"
 teaching: 30
 exercises: 15
 output: 
@@ -27,7 +27,60 @@ knitr_fig_path("06-")
 source("../bin/download_data.R")
 ```
 
-## R Markdown
+## What is an API?
+
+An API is an Application Programming Interface. It is a way of making 
+applications, in our case an R-script, able to communicate with another 
+application, here the Statistics Denmark databases.
+
+Talking about APIs, we talk about several different things. It can be quite 
+confusing, but dont worry!
+
+What we want to be able to do, is to let our own application, our R-script,
+send a command to a remote application, the databases of Statistics Denmark, 
+in order to retrieve specific data.
+
+An API defines the different commands we can send, and how the data that we 
+get back, is formatted.
+
+Often APIs will require a user account with a login and a password. 
+Statistics Denmark does not.
+
+The standard way to send a command, or a request, to an API is to use the 
+GET (and POST) functions at the core of the internet. 
+
+In a certain sense this is what we do when we access a website. We go to 
+www.dr.dk/sporten and get a result, the current webpage at the front of 
+the sports section of Danmarks Radio. 
+
+If we instead ask www.dr.dk to return the result of our request for 
+www.dr.dk/nyheder/politik, we will get the current webpage with news on politics.
+
+This is what we do when we access an API. But instead of using our browser, we
+use the method our browser uses (GET), tells that method that we would like 
+some specified information, and get a result that is not a webpage, but rather
+a set of data. Hopefully organised in a way that is easy to read.
+
+Writing our own GET-requests to communicate with an API is not simple. 
+Thankfully kind people have written libraries, some in R, that makes accessing 
+specific APIs easier. The one we are going to use here is called "danstat"
+
+```{r}
+library(danstat)
+get_subjects()
+```
+
+
+When we access a website
+
+
+a set of commands that we can send to an application. And we are
+told what we can expect from the remote application, if we send a specific 
+command to it.
+
+We need to send our commands in a very specific way to t
+
+
 
 R Markdown is a flexible type of document that allows you to seamlessly combine 
 executable R code, and its output, with text in a single document. These

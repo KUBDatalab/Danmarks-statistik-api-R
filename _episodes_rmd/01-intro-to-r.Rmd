@@ -34,7 +34,7 @@ source("../bin/download_data.R")
 ```
 
 
-## Creating objects in R
+## A very short refresher on R
 
 You can get output from R simply by typing math in the console:
 
@@ -53,14 +53,7 @@ area_hectares <- 1.0
 
 `<-` is the assignment operator. It assigns values on the right to objects on
 the left. So, after executing `x <- 3`, the value of `x` is `3`. The arrow can
-be read as 3 **goes into** `x`.  For historical reasons, you can also use `=`
-for assignments, but not in every context. Because of the
-[slight](http://blog.revolutionanalytics.com/2008/12/use-equals-or-arrow-for-assignment.html)
-[differences](http://r.789695.n4.nabble.com/Is-there-any-difference-between-and-tp878594p878598.html)
-in syntax, it is good practice to always use `<-` for assignments. More 
-generally we prefer the `<-` syntax over `=` because it makes it clear what
-direction the assignment is operating (left assignment), and it increases the
-read-ability of the code.
+be read as 3 **goes into** `x`.  
 
 In RStudio, typing <kbd>Alt</kbd> + <kbd>-</kbd> (push <kbd>Alt</kbd> at the
 same time as the <kbd>-</kbd> key) will write `<- ` in a single keystroke in a
