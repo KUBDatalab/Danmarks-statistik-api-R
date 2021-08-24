@@ -52,37 +52,6 @@ functions `read_csv()` or `read_table()`; in other words, when importing
 spreadsheets from your hard drive (or the web). We will now demonstrate how to
 import tabular data using `read_csv()`.
 
-## Presentation of the SAFI Data
-
-SAFI (Studying African Farmer-Led Irrigation) is a study looking at farming
-and irrigation methods in Tanzania and Mozambique. The survey data
-was collected through interviews conducted between November 2016 and
-June 2017. For this lesson, we will be using a subset of the
-available data. For information about the full teaching dataset used
-in other lessons in this workshop, see the
-[dataset description](http://www.datacarpentry.org/socialsci-workshop/data/).
-
-We will be using a subset of the cleaned version of the dataset that
-was produced through cleaning in OpenRefine (`data/SAFI_clean.csv`). Each row holds
-information for a single interview respondent, and the columns
-represent:
-
-| column_name | description |
-| ----------- | ----------- |
-| key_id | Added to provide a unique Id for each observation. (The InstanceID field does this as well but it is not as convenient to use) |
-| village | Village name |
-| interview_date | Date of interview |
-| no_membrs | How many members in the household? |
-| years_liv | How many years have you been living in this village or neighboring village? |
-| respondent_wall_type | What type of walls does their house have (from list) |
-| rooms | How many rooms in the main house are used for sleeping? |
-| memb_assoc | Are you a member of an irrigation association? |
-| affect_conflicts | Have you been affected by conflicts with other irrigators in the area? |
-| liv_count | Number of livestock owned. |
-| items_owned | Which of the following items are owned by the household? (list) |
-| no_meals | How many meals do people in your household normally eat in a day? |
-| months_lack_food | Indicate which months, In the last 12 months have you faced a situation when you did not have enough food to feed the household? |
-| instanceID | Unique identifier for the form data submission |
 
 
 ## Importing data
@@ -103,14 +72,6 @@ inside your project, like analysis projects with data and reports in different
 subdirectories.  This is an important contrast to using `setwd()`, which 
 depends on the way you order your files on your computer. 
 
-<figure>
-```{r here-figure, echo = FALSE, fig.show = "hold", fig.alt = "Monsters at a fork in the road, with signs saying here, and not here. One direction, not here, leads to a scary dark forest with spiders and absolute filepaths, while the other leads to a sunny, green meadow, and a city below a rainbow and a world free of absolute filepaths. Art by Allison Horst", out.width="100%"}
-knitr::include_graphics("../fig/here_horst.png")
-```
-<figcaption>
-Image credit: <a href="https://github.com/allisonhorst/stats-illustrations">Allison Horst</a>
-</figcaption>
-</figure>
 
 
 Before we can use the `read_csv()` and `here()` functions, we need to load the 
@@ -135,17 +96,6 @@ as inputs (e.g., `"data"`, `"SAFI_clean.csv"`), each enclosed in quotations
 necessary to navigate to a particular file 
 (e.g., `here("analysis", "data", "surveys", "clean", "SAFI_clean.csv)`). 
 
-If you were to type in the code above, it is likely that the `read.csv()`
-function would appear in the automatically populated list of functions. This
-function is different from the `read_csv()` function, as it is included in the
-"base" packages that come pre-installed with R. Overall, `read.csv()` behaves
-similar to `read_csv()`, with a few notable differences. First, `read.csv()`
-coerces column names with spaces and/or special characters to different names
-(e.g. `interview date` becomes `interview.date`). Second, `read.csv()`
-stores data as a `data.frame`, where `read_csv()` stores data as a `tibble`.
-We prefer tibbles because they have nice printing properties among other
-desirable qualities. Read more about tibbles
-[here](https://tibble.tidyverse.org/).
 
 
 The second statement in the code above creates a data frame but doesn't output
