@@ -1,5 +1,5 @@
 current directory: /home/runner/work/Danmarks-statistik-api-R/Danmarks-statistik-api-R/.vendor/bundle/ruby/2.7.0/gems/unf_ext-0.0.7.7/ext/unf_ext
-/opt/hostedtoolcache/Ruby/2.7.4/x64/bin/ruby -I /opt/hostedtoolcache/Ruby/2.7.4/x64/lib/ruby/2.7.0 -r ./siteconf20210824-10992-1ftjdpc.rb extconf.rb
+/opt/hostedtoolcache/Ruby/2.7.4/x64/bin/ruby -I /opt/hostedtoolcache/Ruby/2.7.4/x64/lib/ruby/2.7.0 -r ./siteconf20210824-11015-jwhhha.rb extconf.rb
 checking for -lstdc++... yes
 creating Makefile
 
@@ -180,5 +180,5 @@ make[1]: Entering directory '/home/runner/work/Danmarks-statistik-api-R/Danmarks
 Makefile:260: warning: overriding recipe for target 'unf_ext.so'
 make[1]: Entering directory '/home/runner/work/Danmarks-statistik-api-R/Danmarks-statistik-api-R/.vendor/bundle/ruby/2.7.0/gems/unf_ext-0.0.7.7/ext/unf_ext'
 :260: warning: ignoring old recipe for target 'unf_ext.so'
-/usr/bin/install -c -m 0755 unf_ext.so ./.gem.20210824-10992-w4buki
+/usr/bin/install -c -m 0755 unf_ext.so ./.gem.20210824-11015-1t0bagk
 make[1]: Leaving directory '/home/runner/work/Danmarks-statistik-api-R/Danmarks-statistik-api-R/.vendor/bundle/ruby/2.7.0/gems/unf_ext-0.0.7.7/ext/unf_ext'

@@ -63,10 +63,24 @@ Writing our own GET-requests to communicate with an API is not simple.
 Thankfully kind people have written libraries, some in R, that makes accessing 
 specific APIs easier. The one we are going to use here is called "danstat"
 
+## The danstat package/library
+
+Before using the library, we need to install it:
+
+
+~~~
+install.packages("danstat")
+~~~
+{: .language-r}
+
+After installation, we load the library using the library function. After that
+we can access the functions included in the library:
+
 
 ~~~
 library(danstat)
-get_subjects()
+subjects <- get_subjects()
+subjects
 ~~~
 {: .language-r}
 
@@ -90,6 +104,320 @@ get_subjects()
 ~~~
 {: .output}
 
+Statistics Denmark give access to 13 collections of data, organised in 
+subjects. 
+
+The get_subjects() function sends a request to the Statistics Denmark API, asking
+for a list of the subjects. The information is returned to our script, and the
+get_subjects() function presents us with a dataframe containing the information.
+
+Each subject have sub-subjects. If we want to take a closer look at the 
+subdivisions of a given subject, we use the get_subjects() function again,
+this time specifying which subject we are interested in:
+
+
+~~~
+subject <- get_subjects("02")
+subject
+~~~
+{: .language-r}
+
+
+
+~~~
+  id              description active hasSubjects
+1 02 Population and elections   TRUE        TRUE
+                                                                                                                                                                                                                                                                                                                                                                subjects
+1 2401, 2402, 2405, 2406, 2407, 2408, 2410, 2409, 2411, Population and population projections, Immigrants and their descendants, Births, Deaths and life expectancy, Households, families and children, Marriages and divorces, Migrations, Names, Elections, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE
+~~~
+{: .output}
+
+The result is a bit complicated. The column "subjects" in the resulting dataframe
+contains another dataframe. We access it like we normally would access a 
+column in a dataframe:
+
+
+~~~
+subject$subjects
+~~~
+{: .language-r}
+
+
+
+~~~
+[[1]]
+    id                           description active hasSubjects subjects
+1 2401 Population and population projections   TRUE        TRUE     NULL
+2 2402      Immigrants and their descendants   TRUE        TRUE     NULL
+3 2405                                Births   TRUE        TRUE     NULL
+4 2406            Deaths and life expectancy   TRUE        TRUE     NULL
+5 2407     Households, families and children   TRUE        TRUE     NULL
+6 2408                Marriages and divorces   TRUE        TRUE     NULL
+7 2410                            Migrations   TRUE        TRUE     NULL
+8 2409                                 Names   TRUE        TRUE     NULL
+9 2411                             Elections   TRUE        TRUE     NULL
+~~~
+{: .output}
+
+Those sub-subjects have their own subjects! Lets get to the bottom of this:
+
+
+~~~
+sub_sub_subjects <- get_subjects("2401")
+sub_sub_subjects$subjects
+~~~
+{: .language-r}
+
+
+
+~~~
+[[1]]
+     id            description active hasSubjects subjects
+1 10021  Population in Denmark   TRUE       FALSE     NULL
+2 10022 Population projections   TRUE       FALSE     NULL
+~~~
+{: .output}
+get_subjects is able to retrieve all the sub, sub-sub and sub-sub-sub-jects in
+one go. The result is a bit confusing and difficult to navigate.
+
+Remember that the initial result was a dataframe containing another dataframe.
+If we go all the way to the bottom, we will get a dataframe, containing several
+dataframes, each of those containing several dataframes. 
+
+We recommend that you do not try it, but this is how it is done:
+
+~~~
+lots_of_subjects <- get_subjects("02", recursive = T, include_tables = T)
+~~~
+{: .language-r}
+
+For each of the final subjects, there are several tables available, containing data.
+
+How do we find out which tables exists?
+
+The get_tables() function returns a dataframe with information about the 
+tables available for a given subject.
+
+
+
+~~~
+tables <- get_tables(subjects="10021")
+tables
+~~~
+{: .language-r}
+
+
+
+~~~
+         id                                                          text
+1    FOLK1A                    Population at the first day of the quarter
+2    FOLK1B                    Population at the first day of the quarter
+3    FOLK1C                    Population at the first day of the quarter
+4    FOLK1D                    Population at the first day of the quarter
+5    FOLK1E                    Population at the first day of the quarter
+6     FOLK2                                         Population 1. January
+7   INDOPH1                                         Immigrants 1. January
+8   INDOPH2                                         Immigrants 1. January
+9    KRYDS1                                         Population 1. January
+10   KRYDS2                            People of Danish origin 1. January
+11   KRYDS3                                         Population 1. January
+12   KRYDS4                                         Population 1. January
+13    FOLK3                                         Population 1. January
+14       FT                          Population figures from the censuses
+15    BEF5F People born in Faroe Islands and living in Denmark 1. January
+16    BEF5G     People born in Greenland and living in Denmark 1. January
+17     BEF5                                         Population 1. January
+18      BY3                                         Population 1. January
+19      BY1                                         Population 1. January
+20      BY4                                         Households 1. January
+21      BY2                                         Population 1. January
+22     BEF4                                         Population 1. January
+23    HISB3                                      Summary vital statistics
+24    BEV22                   Summary vital statistics (provisional data)
+25   BEV107                                      Summary vital statistics
+26   GALDER                                                   Average age
+27 KMGALDER                                                   Average age
+28      KM1                    Population at the first day of the quarter
+29      KM5                                         Population 1. January
+30    SOGN1                                         Population 1. January
+31   SOGN10                                         Population 1. January
+32 KMSTA003                                      Summary vital statistics
+      unit             updated firstPeriod latestPeriod active
+1   Number 2021-08-11T08:00:00      2008Q1       2021Q3   TRUE
+2   Number 2021-08-11T08:00:00      2008Q1       2021Q3   TRUE
+3   Number 2021-08-11T08:00:00      2008Q1       2021Q3   TRUE
+4   Number 2021-08-11T08:00:00      2008Q1       2021Q3   TRUE
+5   Number 2021-08-11T08:00:00      2008Q1       2021Q3   TRUE
+6   Number 2021-02-11T08:00:00        1980         2021   TRUE
+7   Number 2021-06-01T08:00:00        2008         2021   TRUE
+8   Number 2021-06-01T08:00:00        2008         2021   TRUE
+9   Number 2021-02-11T08:00:00        2019         2021   TRUE
+10  Number 2021-02-11T08:00:00        2019         2021   TRUE
+11  Number 2021-02-11T08:00:00        2019         2021   TRUE
+12  Number 2021-02-11T08:00:00        2019         2021   TRUE
+13  Number 2021-02-11T08:00:00        2008         2021   TRUE
+14  Number 2021-02-11T08:00:00        1769         2021   TRUE
+15  Number 2021-02-11T08:00:00        2008         2021   TRUE
+16  Number 2021-02-11T08:00:00        2008         2021   TRUE
+17  Number 2021-02-11T08:00:00        1990         2021   TRUE
+18       - 2021-04-29T08:00:00        2017         2021   TRUE
+19  Number 2021-04-29T08:00:00        2010         2021   TRUE
+20  Number 2021-05-19T08:00:00        2010         2021   TRUE
+21  Number 2021-04-29T08:00:00        2010         2021   TRUE
+22  Number 2021-03-31T08:00:00        1901         2021   TRUE
+23  Number 2021-02-12T08:00:00        1901         2021   TRUE
+24  Number 2021-08-11T08:00:00      2007Q2       2021Q2   TRUE
+25  Number 2021-02-11T08:00:00        2006         2020   TRUE
+26 Average 2021-02-11T08:00:00        2005         2021   TRUE
+27 Average 2021-02-11T08:00:00        2007         2021   TRUE
+28  Number 2021-08-11T08:00:00      2007Q1       2021Q3   TRUE
+29  Number 2021-02-11T08:00:00        2007         2021   TRUE
+30  Number 2021-02-11T08:00:00        2010         2021   TRUE
+31  Number 2020-09-16T08:00:00        1925         2020   TRUE
+32  Number 2021-02-11T08:00:00        2015         2020   TRUE
+                                                                                                                                                                                                                                               variables
+1                                                                                                                                                                                                                 region, sex, age, marital status, time
+2                                                                                                                                                                                                                    region, sex, age, citizenship, time
+3                                                                                                                                                                                                    region, sex, age, ancestry, country of origin, time
+4                                                                                                                                                                                                                    region, sex, age, citizenship, time
+5                                                                                                                                                                                                                       region, sex, age, ancestry, time
+6                                                                                                                                                                                               age, sex, ancestry, citizenship, country of origin, time
+7                                                                                                                                                                                                                first permit of residence, region, time
+8                                                                                                                                                                                          first permit of residence, group of countries of origin, time
+9  The origin of the main character, The country of birth of the main character, The citizenship of the main character, The country of birth of the mother, mothers citizenship, The country of birth of the father, the citizenship of the father, time
+10                                                                                                                          The country of birth of the main character, country of birth and citizenship of the parents, age of the main character, time
+11                                                                                            The origin of the main character, The country of birth of the main character, The country of birth of the mother, The country of birth of the father, time
+12                                                                                                                                    The origin of the main character, country of birth and citizenship of the parents, age of the main character, time
+13                                                                                                                                                                                                        day of birth, birth month, year of birth, time
+14                                                                                                                                                                                                                                   national part, time
+15                                                                                                                                                                                                                sex, age, parents place of birth, time
+16                                                                                                                                                                                                                sex, age, parents place of birth, time
+17                                                                                                                                                                                                                      sex, age, country of birth, time
+18                                                                                                                                                                                  urban and rural areas, population, area and population density, time
+19                                                                                                                                                                                                                 urban and rural areas, age, sex, time
+20                                                                                                                                                                                    urban and rural areas, type of household, number of children, time
+21                                                                                                                                                                                                               municipality, city size, age, sex, time
+22                                                                                                                                                                                                                                         islands, time
+23                                                                                                                                                                                                                                type of movement, time
+24                                                                                                                                                                                                                   region, type of movement, sex, time
+25                                                                                                                                                                                                                   region, type of movement, sex, time
+26                                                                                                                                                                                                                               municipality, sex, time
+27                                                                                                                                                                                                                                     parish, sex, time
+28                                                                                                                                                                                                           parish, member of the National Church, time
+29                                                                                                                                                                                                 parish, sex, age, member of the National Church, time
+30                                                                                                                                                                                                                                parish, sex, age, time
+31                                                                                                                                                                                                                                          parish, time
+32                                                                                                                                                                                                                               parish, movements, time
+~~~
+{: .output}
+We get at lot of information here. The id identifies the table, text gives a 
+description of the table that humans can understand. When the table was last
+updated and the first and last period that the table contains data for.
+
+In the variables column, we get information on what kind of data is stored in 
+the table.
+
+
+
+
+~~~
+metadata <- get_table_metadata("FOLK1A", variables_only = T)
+metadata
+~~~
+{: .language-r}
+
+
+
+~~~
+          id           text elimination  time                     map
+1     OMRÅDE         region        TRUE FALSE denmark_municipality_07
+2        KØN            sex        TRUE FALSE                    <NA>
+3      ALDER            age        TRUE FALSE                    <NA>
+4 CIVILSTAND marital status        TRUE FALSE                    <NA>
+5        Tid           time       FALSE  TRUE                    <NA>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          values
+1                                                                                                                                                                                      000, 084, 101, 147, 155, 185, 165, 151, 153, 157, 159, 161, 163, 167, 169, 183, 173, 175, 187, 201, 240, 210, 250, 190, 270, 260, 217, 219, 223, 230, 400, 411, 085, 253, 259, 350, 265, 269, 320, 376, 316, 326, 360, 370, 306, 329, 330, 340, 336, 390, 083, 420, 430, 440, 482, 410, 480, 450, 461, 479, 492, 530, 561, 563, 607, 510, 621, 540, 550, 573, 575, 630, 580, 082, 710, 766, 615, 707, 727, 730, 741, 740, 746, 706, 751, 657, 661, 756, 665, 760, 779, 671, 791, 081, 810, 813, 860, 849, 825, 846, 773, 840, 787, 820, 851, All Denmark, Region Hovedstaden, Copenhagen, Frederiksberg, Dragør, Tårnby, Albertslund, Ballerup, Brøndby, Gentofte, Gladsaxe, Glostrup, Herlev, Hvidovre, Høje-Taastrup, Ishøj, Lyngby-Taarbæk, Rødovre, Vallensbæk, Allerød, Egedal, Fredensborg, Frederikssund, Furesø, Gribskov, Halsnæs, Helsingør, Hillerød, Hørsholm, Rudersdal, Bornholm, Christiansø, Region Sjælland, Greve, Køge, Lejre, Roskilde, Solrød, Faxe, Guldborgsund, Holbæk, Kalundborg, Lolland, Næstved, Odsherred, Ringsted, Slagelse, Sorø, Stevns, Vordingborg, Region Syddanmark, Assens, Faaborg-Midtfyn, Kerteminde, Langeland, Middelfart, Nordfyns, Nyborg, Odense, Svendborg, Ærø, Billund, Esbjerg, Fanø, Fredericia, Haderslev, Kolding, Sønderborg, Tønder, Varde, Vejen, Vejle, Aabenraa, Region Midtjylland, Favrskov, Hedensted, Horsens, Norddjurs, Odder, Randers, Samsø, Silkeborg, Skanderborg, Syddjurs, Aarhus, Herning, Holstebro, Ikast-Brande, Lemvig, Ringkøbing-Skjern, Skive, Struer, Viborg, Region Nordjylland, Brønderslev, Frederikshavn, Hjørring, Jammerbugt, Læsø, Mariagerfjord, Morsø, Rebild, Thisted, Vesthimmerlands, Aalborg
+2                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   TOT, 1, 2, Total, Men, Women
+3 IALT, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, Total, 0 years, 1 year, 2 years, 3 years, 4 years, 5 years, 6 years, 7 years, 8 years, 9 years, 10 years, 11 years, 12 years, 13 years, 14 years, 15 years, 16 years, 17 years, 18 years, 19 years, 20 years, 21 years, 22 years, 23 years, 24 years, 25 years, 26 years, 27 years, 28 years, 29 years, 30 years, 31 years, 32 years, 33 years, 34 years, 35 years, 36 years, 37 years, 38 years, 39 years, 40 years, 41 years, 42 years, 43 years, 44 years, 45 years, 46 years, 47 years, 48 years, 49 years, 50 years, 51 years, 52 years, 53 years, 54 years, 55 years, 56 years, 57 years, 58 years, 59 years, 60 years, 61 years, 62 years, 63 years, 64 years, 65 years, 66 years, 67 years, 68 years, 69 years, 70 years, 71 years, 72 years, 73 years, 74 years, 75 years, 76 years, 77 years, 78 years, 79 years, 80 years, 81 years, 82 years, 83 years, 84 years, 85 years, 86 years, 87 years, 88 years, 89 years, 90 years, 91 years, 92 years, 93 years, 94 years, 95 years, 96 years, 97 years, 98 years, 99 years, 100 years, 101 years, 102 years, 103 years, 104 years, 105 years, 106 years, 107 years, 108 years, 109 years, 110 years, 111 years, 112 years, 113 years, 114 years, 115 years, 116 years, 117 years, 118 years, 119 years, 120 years, 121 years, 122 years, 123 years, 124 years, 125 years
+4                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    TOT, U, G, E, F, Total, Never married, Married/separated, Widowed, Divorced
+5                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 2008K1, 2008K2, 2008K3, 2008K4, 2009K1, 2009K2, 2009K3, 2009K4, 2010K1, 2010K2, 2010K3, 2010K4, 2011K1, 2011K2, 2011K3, 2011K4, 2012K1, 2012K2, 2012K3, 2012K4, 2013K1, 2013K2, 2013K3, 2013K4, 2014K1, 2014K2, 2014K3, 2014K4, 2015K1, 2015K2, 2015K3, 2015K4, 2016K1, 2016K2, 2016K3, 2016K4, 2017K1, 2017K2, 2017K3, 2017K4, 2018K1, 2018K2, 2018K3, 2018K4, 2019K1, 2019K2, 2019K3, 2019K4, 2020K1, 2020K2, 2020K3, 2020K4, 2021K1, 2021K2, 2021K3, 2008Q1, 2008Q2, 2008Q3, 2008Q4, 2009Q1, 2009Q2, 2009Q3, 2009Q4, 2010Q1, 2010Q2, 2010Q3, 2010Q4, 2011Q1, 2011Q2, 2011Q3, 2011Q4, 2012Q1, 2012Q2, 2012Q3, 2012Q4, 2013Q1, 2013Q2, 2013Q3, 2013Q4, 2014Q1, 2014Q2, 2014Q3, 2014Q4, 2015Q1, 2015Q2, 2015Q3, 2015Q4, 2016Q1, 2016Q2, 2016Q3, 2016Q4, 2017Q1, 2017Q2, 2017Q3, 2017Q4, 2018Q1, 2018Q2, 2018Q3, 2018Q4, 2019Q1, 2019Q2, 2019Q3, 2019Q4, 2020Q1, 2020Q2, 2020Q3, 2020Q4, 2021Q1, 2021Q2, 2021Q3
+~~~
+{: .output}
+
+There is a lot of other metadata in the tables, including the phone number to 
+the staffmember at Statistics Denmark that is responsible for maintaining the
+table. We are only interested in the variables. 
+
+What kind of values can the individual datapoints take?
+
+
+~~~
+metadata %>% slice(4) %>% pull(values)
+~~~
+{: .language-r}
+
+
+
+~~~
+Error in metadata %>% slice(4) %>% pull(values): could not find function "%>%"
+~~~
+{: .error}
+
+We use the slice function from tidyverse to pull out the fourth row of the 
+dataframe, and the pull-function to pull out the values in the values
+column.
+
+The same trick can be done for the other fields in the table:
+
+
+~~~
+metadata %>% slice(1) %>% pull(values)
+~~~
+{: .language-r}
+
+
+
+~~~
+Error in metadata %>% slice(1) %>% pull(values): could not find function "%>%"
+~~~
+{: .error}
+Here we see the individual municipalities in Denmark. And a handfull of 
+aggregate numbers.
+
+Now we are almost ready to pull out the actual data!
+
+
+
+~~~
+get_data()
+~~~
+{: .language-r}
+
+
+
+~~~
+Error in make_variable_input(table_id, variables): argument "table_id" is missing, with no default
+~~~
+{: .error}
+
+
+
+get_subjects provides information on the different tables available from 
+Statistics Denmark. If we drill down to a specific table, let us use
+10021 - Population in Denmark, what kind of information does it contain?
+
+
+~~~
+danstat::get_tables() %>% view()
+~~~
+{: .language-r}
+
+
+
+~~~
+Error in danstat::get_tables() %>% view(): could not find function "%>%"
+~~~
+{: .error}
 
 When we access a website
 
