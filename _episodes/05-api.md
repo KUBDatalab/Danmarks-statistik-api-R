@@ -65,6 +65,52 @@ specific APIs easier. The one we are going to use here is called "danstat"
 
 ## The danstat package/library
 
+
+Before doing anything else, it is useful to take a look at the result:
+
+~~~
+Rows: 220 Columns: 4
+~~~
+{: .output}
+
+
+
+~~~
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ";"
+chr (3): IELAND, KØN, TID
+dbl (1): INDHOLD
+~~~
+{: .output}
+
+
+
+~~~
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+~~~
+{: .output}
+
+
+
+~~~
+Error in data %>% head: could not find function "%>%"
+~~~
+{: .error}
+
+This is from the table "folk1c" from Statistics Denmark.
+We get some variables, IELAND, KØN, and TID. And then the content of the table, 
+INDHOLD. Ie the number of men, living in denmark i the first quarter of 2008 in
+the first line.
+
+How do we get that table?
+
+All tables from Statistics Denmark are organised in a hierarcical tree of 
+subjects. 
+
+Let us begin there.
+
 Before using the library, we need to install it:
 
 
@@ -73,7 +119,7 @@ install.packages("danstat")
 ~~~
 {: .language-r}
 
-After installation, we load the library using the library function. After that
+After installation, we load the library using the library function. And then 
 we can access the functions included in the library:
 
 
@@ -103,6 +149,30 @@ subjects
 13 19                                     Other   TRUE        TRUE     NULL
 ~~~
 {: .output}
+
+We get the 13 major subjects from Statistics Denmark. Each of them have sub-subjects.
+
+Let us try to get the sub-subjects from the subject 02 - containing information
+about populations and elections:
+
+
+~~~
+sub_subjects <- get_subjects(subjects = "02")
+sub_subjects
+~~~
+{: .language-r}
+
+
+
+~~~
+  id              description active hasSubjects
+1 02 Population and elections   TRUE        TRUE
+                                                                                                                                                                                                                                                                                                                                                                subjects
+1 2401, 2402, 2405, 2406, 2407, 2408, 2410, 2409, 2411, Population and population projections, Immigrants and their descendants, Births, Deaths and life expectancy, Households, families and children, Marriages and divorces, Migrations, Names, Elections, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE
+~~~
+{: .output}
+
+
 
 Statistics Denmark give access to 13 collections of data, organised in 
 subjects. 
@@ -752,7 +822,7 @@ uses one backtick (``` `r` ```), whereas code chunks use three backticks
 (&#96;&#96;&#96; r &#96;&#96;&#96;). 
 
 For example, today's date is &#96;r Sys.Date()&#96;, will be rendered as: 
-today's date is 2021-08-24.  
+today's date is 2021-08-26.  
 The code will display today's date in the output document (well, technically the 
 date the document was last knitted).
 

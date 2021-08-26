@@ -67,13 +67,37 @@ specific APIs easier. The one we are going to use here is called "danstat"
 
 ## The danstat package/library
 
+
+Before doing anything else, it is useful to take a look at the result:
+```{r echo = F}
+library(danstat)
+variables <- list(list(code = "ieland", values = c(5100, 5128)),
+                  list(code = "køn", values = c(1,2)),
+                  list(code = "tid", values = NA))
+
+data <- get_data("folk1c", variables)
+data %>% head
+```
+
+This is from the table "folk1c" from Statistics Denmark.
+We get some variables, IELAND, KØN, and TID. And then the content of the table, 
+INDHOLD. Ie the number of men, living in denmark i the first quarter of 2008 in
+the first line.
+
+How do we get that table?
+
+All tables from Statistics Denmark are organised in a hierarcical tree of 
+subjects. 
+
+Let us begin there.
+
 Before using the library, we need to install it:
 
 ```{r eval=F}
 install.packages("danstat")
 ```
 
-After installation, we load the library using the library function. After that
+After installation, we load the library using the library function. And then 
 we can access the functions included in the library:
 
 ```{r}
@@ -81,6 +105,18 @@ library(danstat)
 subjects <- get_subjects()
 subjects
 ```
+
+We get the 13 major subjects from Statistics Denmark. Each of them have sub-subjects.
+
+Let us try to get the sub-subjects from the subject 02 - containing information
+about populations and elections:
+
+```{r}
+sub_subjects <- get_subjects(subjects = "02")
+sub_subjects
+```
+
+
 
 Statistics Denmark give access to 13 collections of data, organised in 
 subjects. 
