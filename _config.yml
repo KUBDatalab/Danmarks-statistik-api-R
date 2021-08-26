@@ -10,7 +10,7 @@
 carpentry: "dc"
 
 # Overall title for pages.
-title: "R for Social Scientists"
+title: "Statistics Denmark API using R"
 
 # Life cycle stage of the lesson
 # possible values: "pre-alpha", "alpha", "beta", "stable"
@@ -30,7 +30,7 @@ kind: "lesson"
 repository: <USERNAME>/<PROJECT>
 
 # Email address, no mailto:
-email: "team@carpentries.org"
+email: "kubdatalab@kb.dk"
 
 # Sites.
 amy_site: "https://amy.software-carpentry.org/workshops"
