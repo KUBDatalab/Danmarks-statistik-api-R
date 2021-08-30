@@ -1,5 +1,5 @@
 ---
-title: "Data Wrangling with dplyr and tidyr"
+title: "Time"
 keypoints:
 - Use the `dplyr` package to manipulate dataframes.
 - Use `select()` to choose variables from a dataframe.
@@ -43,6 +43,14 @@ source("../bin/chunk-options.R")
 knitr_fig_path("03-")
 source("../bin/download_data.R")
 ```
+
+
+A relatively short session on time.
+
+Lubridate
+tsibble
+
+Just on the level of having the functions we need to plot.
 
 **`dplyr`** is a package for making tabular data wrangling easier by using a
 limited set of functions that can be combined to extract and summarize insights
@@ -856,28 +864,6 @@ interviews_items_owned %>%
 > {: .solution}
 {: .challenge}
 
-## Exporting data
-
-Now that you have learned how to use **`dplyr`** to extract information from
-or summarize your raw data, you may want to export these new data sets to share
-them with your collaborators or for archival.
-
-Similar to the `read_csv()` function used for reading CSV files into R, there is
-a `write_csv()` function that generates CSV files from dataframes.
-
-Before using `write_csv()`, we are going to create a new folder, `data_output`,
-in our working directory that will store this generated dataset. We don't want
-to write generated datasets in the same directory as our raw data. It's good
-practice to keep them separate. The `data` folder should only contain the raw,
-unaltered data, and should be left alone to make sure we don't delete or modify
-it. In contrast, our script will generate the contents of the `data_output`
-directory, so even if the files it contains are deleted, we can always
-re-generate them.
-
-In preparation for our next lesson on plotting, we are going to create a version
-of the dataset where each of the columns includes only one data value. To do
-this, we will use `pivot_wider` to expand the `months_lack_food` and
-`items_owned` columns. We will also create a couple of summary columns.
 
 
 ```{r, purl = FALSE}
@@ -902,14 +888,5 @@ interviews_plotting <- interviews %>%
 ```
 
 Now we can save this dataframe to our `data_output` directory.
-
-```{r, purl = FALSE, eval = FALSE}
-write_csv (interviews_plotting, file = "data_output/interviews_plotting.csv")
-```
-
-```{r, purl = FALSE, eval = TRUE, echo = FALSE}
-if (!dir.exists("data_output")) dir.create("data_output")
-write_csv(interviews_plotting, "data_output/interviews_plotting.csv")
-```
 
 {% include links.md %}
