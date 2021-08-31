@@ -298,112 +298,11 @@ interviews %>%
 
 
 
-```{r, purl = FALSE}
-interviews_wide <- interviews %>%
-    mutate(wall_type_logical = TRUE) %>%
-    pivot_wider(names_from = respondent_wall_type,
-                values_from = wall_type_logical,
-                values_fill = list(wall_type_logical = FALSE))
-```
-
-
-
-```{r, purl = FALSE}
-interviews_long <- interviews_wide %>%
-    pivot_longer(cols = burntbricks:sunbricks,
-                 names_to = "respondent_wall_type",
-                 values_to = "wall_type_logical")
-```
 
 
 ![](../fig/pivot_wide_to_long.png)
 
 
-```{r, purl = FALSE}
-interviews_long <- interviews_wide %>%
-    pivot_longer(cols = c(burntbricks, cement, muddaub, sunbricks),
-                 names_to = "respondent_wall_type",
-                 values_to = "wall_type_logical") %>%
-    filter(wall_type_logical) %>%
-    select(-wall_type_logical)
-```
-
-```{r, purl = FALSE}
-interviews_items_owned <- interviews %>%
-  separate_rows(items_owned, sep = ";") %>%
-  replace_na(list(items_owned = "no_listed_items")) %>%
-  mutate(items_owned_logical = TRUE) %>%
-    pivot_wider(names_from = items_owned,
-                values_from = items_owned_logical,
-                values_fill = list(items_owned_logical = FALSE))
-
-nrow(interviews_items_owned)
-```
-
-```{r, eval = FALSE}
-interviews_items_owned <- interviews %>%
-```
-
-
-```{r, eval = FALSE}
-separate_rows(items_owned, sep = ";") %>%
-```
-
-
-```{r, eval = FALSE}
-replace_na(list(items_owned = "no_listed_items")) %>%
-```
-
-
-```{r, eval = FALSE}
-mutate(items_owned_logical = TRUE) %>%
-```
-
-
-```{r, eval = FALSE}
-pivot_wider(names_from = items_owned,
-            values_from = items_owned_logical,
-            values_fill = list(items_owned_logical = FALSE))
-
-```
-
-
-```{r, purl = FALSE}
-interviews_items_owned %>%
-  filter(bicycle) %>%
-  group_by(village) %>%
-  count(bicycle)
-```
-
-```{r, purl = FALSE}
-interviews_items_owned %>%
-    mutate(number_items = rowSums(select(., bicycle:car))) %>%
-    group_by(village) %>%
-    summarize(mean_items = mean(number_items))
-```
-
-
-
-```{r, purl = FALSE}
-interviews_plotting <- interviews %>%
-  ## pivot wider by items_owned
-  separate_rows(items_owned, sep = ";") %>%
-  ## if there were no items listed, changing NA to no_listed_items
-  replace_na(list(items_owned = "no_listed_items")) %>%
-  mutate(items_owned_logical = TRUE) %>%
-  pivot_wider(names_from = items_owned,
-              values_from = items_owned_logical,
-              values_fill = list(items_owned_logical = FALSE)) %>%
-  ## pivot wider by months_lack_food
-  separate_rows(months_lack_food, sep = ";") %>%
-  mutate(months_lack_food_logical = TRUE) %>%
-  pivot_wider(names_from = months_lack_food,
-              values_from = months_lack_food_logical,
-              values_fill = list(months_lack_food_logical = FALSE)) %>%
-  ## add some summary columns
-  mutate(number_months_lack_food = rowSums(select(., Jan:May))) %>%
-  mutate(number_items = rowSums(select(., bicycle:car)))
-```
 
 
 {% include links.md %}
