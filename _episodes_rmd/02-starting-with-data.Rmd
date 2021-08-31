@@ -1268,7 +1268,7 @@ mdy(char_dates)
 
 <!-- ![](../fig/pivot_wide_to_long.png) -->
 
-<!-- This creates a dataframe with `r nrow(interviews_long)` rows (4 rows per -->
+<!-- This creates a dataframe with  rows (4 rows per -->
 <!-- interview respondent). The four rows for each respondent differ only in the -->
 <!-- value of the "respondent_wall_type" and "wall_type_logical" columns. View the -->
 <!-- data to see what this looks like. -->
