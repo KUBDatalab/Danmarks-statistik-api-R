@@ -100,6 +100,7 @@ Error in data %>% head: could not find function "%>%"
 {: .error}
 
 This is from the table "folk1c" from Statistics Denmark.
+
 We get some variables, IELAND, KØN, and TID. And then the content of the table, 
 INDHOLD. Ie the number of men, living in denmark i the first quarter of 2008 in
 the first line.
@@ -174,9 +175,6 @@ sub_subjects
 
 
 
-Statistics Denmark give access to 13 collections of data, organised in 
-subjects. 
-
 The get_subjects() function sends a request to the Statistics Denmark API, asking
 for a list of the subjects. The information is returned to our script, and the
 get_subjects() function presents us with a dataframe containing the information.
@@ -201,6 +199,7 @@ subject
 1 2401, 2402, 2405, 2406, 2407, 2408, 2410, 2409, 2411, Population and population projections, Immigrants and their descendants, Births, Deaths and life expectancy, Households, families and children, Marriages and divorces, Migrations, Names, Elections, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE
 ~~~
 {: .output}
+
 
 The result is a bit complicated. The column "subjects" in the resulting dataframe
 contains another dataframe. We access it like we normally would access a 
@@ -229,7 +228,8 @@ subject$subjects
 ~~~
 {: .output}
 
-Those sub-subjects have their own subjects! Lets get to the bottom of this:
+Those sub-subjects have their own subjects! Lets get to the bottom of this, and
+use 2401, Population and population projections as an example:
 
 
 ~~~
@@ -247,6 +247,19 @@ sub_sub_subjects$subjects
 2 10022 Population projections   TRUE       FALSE     NULL
 ~~~
 {: .output}
+Now we are at the bottom. We can see in the column "hasSubjects" that there 
+are no sub_sub_sub_subjects. 
+
+The hierarchy is:
+02 Population and elections
+| 
+2401	Population and population projections
+|
+10021	Population in Denmark
+
+The final sub_sub_subject contains a number of tables, that actually 
+contains the data we are looking for.
+
 get_subjects is able to retrieve all the sub, sub-sub and sub-sub-sub-jects in
 one go. The result is a bit confusing and difficult to navigate.
 
@@ -261,9 +274,13 @@ lots_of_subjects <- get_subjects("02", recursive = T, include_tables = T)
 ~~~
 {: .language-r}
 
-For each of the final subjects, there are several tables available, containing data.
+The "recursive = T" parameter means that get_subjects will retrieve 
+the subjects of the subjects, and then the subjects of those subjects.
 
-How do we find out which tables exists?
+But we ended up with a sub_sub_subject, 
+10021	Population in Denmark
+
+How do we find out which tables exists in this subject.
 
 The get_tables() function returns a dataframe with information about the 
 tables available for a given subject.
@@ -380,6 +397,7 @@ tables
 32                                                                                                                                                                                                                               parish, movements, time
 ~~~
 {: .output}
+
 We get at lot of information here. The id identifies the table, text gives a 
 description of the table that humans can understand. When the table was last
 updated and the first and last period that the table contains data for.
@@ -387,7 +405,8 @@ updated and the first and last period that the table contains data for.
 In the variables column, we get information on what kind of data is stored in 
 the table.
 
-
+Before we pull out the data, we need to know which variables are avialable
+in the table. We do this with this function:
 
 
 ~~~
@@ -416,7 +435,9 @@ metadata
 
 There is a lot of other metadata in the tables, including the phone number to 
 the staffmember at Statistics Denmark that is responsible for maintaining the
-table. We are only interested in the variables. 
+table. We are only interested in the variables, which is why we add the 
+parameter "variables_only = T".
+
 
 What kind of values can the individual datapoints take?
 
