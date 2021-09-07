@@ -123,7 +123,7 @@ The get_subjects() function sends a request to the Statistics Denmark API, askin
 for a list of the subjects. The information is returned to our script, and the
 get_subjects() function presents us with a dataframe containing the information.
 
-Each subject have sub-subjects. If we want to take a closer look at the 
+Each subject (may) have sub-subjects. If we want to take a closer look at the 
 subdivisions of a given subject, we use the get_subjects() function again,
 this time specifying which subject we are interested in:
 
@@ -176,10 +176,13 @@ lots_of_subjects <- get_subjects("02", recursive = T, include_tables = T)
 The "recursive = T" parameter means that get_subjects will retrieve 
 the subjects of the subjects, and then the subjects of those subjects.
 
+## Which datatables exists?
+
 But we ended up with a sub_sub_subject, 
+
 10021	Population in Denmark
 
-How do we find out which tables exists in this subject.
+How do we find out which tables exists in this subject?
 
 The get_tables() function returns a dataframe with information about the 
 tables available for a given subject.
@@ -197,7 +200,7 @@ updated and the first and last period that the table contains data for.
 In the variables column, we get information on what kind of data is stored in 
 the table.
 
-Before we pull out the data, we need to know which variables are avialable
+Before we pull out the data, we need to know which variables are available
 in the table. We do this with this function:
 
 ```{r}
@@ -224,34 +227,112 @@ column.
 The same trick can be done for the other fields in the table:
 
 ```{r}
-metadata %>% slice(1) %>% pull(values)
+metadata %>% slice(1) %>% pull(values) %>% .[[1]] %>% head
 ```
-Here we see the individual municipalities in Denmark. And a handfull of 
-aggregate numbers.
+Here we see the individual municipalities in Denmark. 
 
 Now we are almost ready to pull out the actual data!
 
+But first!
+
+## Which variables do we want?
+
+We need to specify which variables we want in our answer. Do we want 
+the total population for all municipalities in Denmark? Or just a few?
+Do we want the total population, or do we want it broken down by sex.
+
+These variables, and the values of them, need to be specified when we 
+pull the data from Statistics Denmark.
+
+We also need to provide that information in a specific way.
+
+If we want data for all municipalites, we want to pull the variable 
+"OMRÅDE" from the list of variables.
+
+Therefore we need to give the function an argument containing both
+the information that we want the population data broken down by "OMRÅDE", and 
+that we want all values of "OMRÅDE".
+
+
+Vectors are characterized by only being able to contain one type of data.
+
+When we need to have structures that can contain more than one type of data,
+we can use the list structure.
+
+Lists allows us to have values, with names (sometime descriptive).
+
+Lists can even contain lists.
+
+And that is what we need here. Let us make our first list:
 
 ```{r}
-get_data()
+list(code = "OMRÅDE", values = NA)
+```
+  
+This list have to components. One called "code", and one called "values".
+Code have the content "OMRÅDE", specifying that we want the variable in the 
+data from Statistics Denmark calld "OMRÅDE".
+
+"values" has the content "NA". We use "NA", when we want to specify that we
+want all the "OMRÅDE". If we only wanted a specific municipality, we could 
+instead specify it instead of writing "NA".
+
+Let us assume that we also want to break down the data based on marriage status.
+
+That information is stored in the variable "CIVILSTAND".
+
+And above, we saw that we had the following values in that variable:
+```{r}
+metadata %>% slice(4) %>% pull(values)
+```
+
+A value for the total population is probably not that interesting, if we 
+pull all the individual values for "Never married" etc.
+
+We can now make another list:
+```{r}
+  list(code = "CIVILSTAND", values = c("U", "G", "E", "F"))
+```
+
+Here the "values" part is a vector containing the values we want to pull out 
+for that variable.
+
+It might be interesting to take a look at how the population changes over time.
+
+In that case we need to pull out data from the "Tid" variable.
+
+That would look like this:
+```{r}
+list(code = "Tid", values = NA)
 ```
 
 
+If we want to pull data broken down by all three variables, we need to provide a
+list, containing three lists. 
 
-get_subjects provides information on the different tables available from 
-Statistics Denmark. If we drill down to a specific table, let us use
-10021 - Population in Denmark, what kind of information does it contain?
+We do that using this code:
+
 
 ```{r}
-danstat::get_tables() %>% view()
+variables <- list(list(code = "OMRÅDE", values = NA),
+                  list(code = "CIVILSTAND", values = c("U", "G", "E", "F")),
+                  list(code = "Tid", values = NA)
+              )
+variables
 ```
 
-When we access a website
+And now, finally, we are ready to get the data!
 
+```{r}
+data <- get_data(table_id = "FOLK1A", variables = variables)
+```
+It takes a short moment. But now we have a dataframe containing the data we 
+requested:
 
-a set of commands that we can send to an application. And we are
-told what we can expect from the remote application, if we send a specific 
-command to it.
+```{r}
+head(data)
+```
 
-We need to send our commands in a very specific way to t
+This procedure will work for all the tables from Statistics Denmark!
 
+The data is nicely formatted and ready to use. Almost.

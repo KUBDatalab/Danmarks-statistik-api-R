@@ -32,6 +32,20 @@ on how complicated it is...
 https://www.youtube.com/watch?v=-5wpm-gesOY
 
 
+## Why?
+
+We just pulled data out giving us the danish population, broken down by
+marriage status and geographical area. And time.
+
+```{r}
+head(data)
+```
+
+Note that the datatype for "TID" is <chr>, meaning character. Those are 
+simply text, not a time. And if we want to plot this, as a function of time,
+the "TID" variable needs to be converted into something R can understand as time.
+
+## A general tool
 lubridate is a package written to make working with dates and times easy(er).
 
 It may need to be installed first.
@@ -96,13 +110,14 @@ ymd_hms("2021-04-21 14:05:12")
 ```
 Those were the nice dates...
 
-# Not so nice date formats
-Statistics Denmark returns a
-lot of data-series by quarter, or month. And we need to convert it to something 
+## Not so nice date formats - a more specific tool
+
+Statistics Denmark returns a lot of data-series by quarter, or month. 
+And we need to convert it to something 
 we can work with. Without necessarily understanding all the details.
 
 The library tsibble provides functions that can convert "2020Q1", the first 
-quarter of 2020 into something R can understand as time-value:
+quarter of 2020, into something R can understand as time-value:
 
 We might need to install it first:
 ```{r eval=F}
@@ -131,5 +146,15 @@ We are not going to go into further details on the challenges of working with
 time-series. The generic lubridate functions and yearquarter() will be enough for
 our purposes.
 
+Let us finish by converting the "TID" column in our data, to a time-format.
+```{r}
+data <- data %>% 
+  mutate(TID = yearquarter(TID))
+
+```
+
+We mutate the column "TID" into the result of running yearquarter() on the
+column "TID". And now we have a data frame that we can do interesting things 
+with.
 
 {% include links.md %}
