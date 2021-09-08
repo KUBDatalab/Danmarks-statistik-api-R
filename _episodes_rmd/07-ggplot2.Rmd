@@ -29,10 +29,17 @@ knitr_fig_path("04-")
 source("../bin/download_data.R")
 ```
 
+Nice data. How does it look?
+
+R has some nice plotting functions build in.
+
+ggplot2 is a package with more, nicer, plotting possibilities.
+
+
 We start by loading the required package. **`ggplot2`** is also included in the
 **`tidyverse`** package.
 
-Short intro to ggplot2 - so we can make a couple of cool plots.
+
 
 
 ```{r load-package, message=FALSE, purl=FALSE}
@@ -42,34 +49,10 @@ library(tidyverse)
 If not still in the workspace, load the data we saved in the previous lesson.
 
 
-```{r load-data, purl=FALSE}
-interviews_plotting <- read_csv("data_output/interviews_plotting.csv")
+```{r load-data, purl=FALSE, eval=F}
+data <- read_csv2("data")
 ```
 
-If you were unable to complete the previous lesson or did not save the data,
-then you can create it now.
-
-```{r, purl = FALSE, eval = FALSE}
-## Not run, but can be used to load in data from previous lesson!
-interviews_plotting <- interviews %>%
-  ## pivot wider by items_owned
-  separate_rows(items_owned, sep = ";") %>%
-  ## if there were no items listed, changing NA to no_listed_items
-  replace_na(list(items_owned = "no_listed_items")) %>%
-  mutate(items_owned_logical = TRUE) %>%
-  pivot_wider(names_from = items_owned, 
-              values_from = items_owned_logical, 
-              values_fill = list(items_owned_logical = FALSE)) %>%
-  ## pivot wider by months_lack_food
-  separate_rows(months_lack_food, sep = ";") %>%
-  mutate(months_lack_food_logical = TRUE) %>%
-  pivot_wider(names_from = months_lack_food, 
-              values_from = months_lack_food_logical, 
-              values_fill = list(months_lack_food_logical = FALSE)) %>%
-  ## add some summary columns
-  mutate(number_months_lack_food = rowSums(select(., Jan:May))) %>%
-  mutate(number_items = rowSums(select(., bicycle:car)))
-```
 
 ## Plotting with **`ggplot2`**
 
@@ -111,15 +94,15 @@ Remember from the last lesson that the pipe operator `%>%` places the result of 
 - use the `ggplot()` function and bind the plot to a specific data frame.
 
 ```{r ggplot-steps-1, eval=FALSE, purl=FALSE}
-interviews_plotting %>%
+data %>%
     ggplot()
 ```
 
 - define a mapping (using the aesthetic (`aes`) function), by selecting the variables to be plotted and specifying how to present them in the graph, e.g. as x/y positions or characteristics such as size, shape, color, etc.
 
 ```{r ggplot-steps-2, eval=FALSE, purl=FALSE}
-interviews_plotting %>%
-    ggplot(aes(x = no_membrs, y = number_items))
+data %>%
+    ggplot(aes(x = TID, y = INDHOLD))
 ```
 
 - add 'geoms' – graphical representations of the data in the plot (points,
@@ -133,8 +116,8 @@ common ones today, including:
 To add a geom to the plot use the `+` operator. Because we have two continuous variables, let's use `geom_point()` first:
 
 ```{r first-ggplot, purl=FALSE}
-interviews_plotting %>%
-    ggplot(aes(x = no_membrs, y = number_items)) +
+data %>%
+    ggplot(aes(x = TID, y = INDHOLD)) +
     geom_point()
 ```
 
@@ -146,11 +129,11 @@ approach in the previous lesson:
 
 ```{r first-ggplot-with-plus, eval=FALSE, purl=FALSE}
 # Assign plot to a variable
-interviews_plot <- interviews_plotting %>%
-    ggplot(aes(x = no_membrs, y = number_items))
+data_plot <- data %>%
+    ggplot(aes(x = TID, y = INDHOLD))
 
 # Draw the plot as a dot plot
-interviews_plot +
+data_plot +
     geom_point()
 ```
 
@@ -170,11 +153,11 @@ interviews_plot +
 
 ```{r ggplot-with-plus-position, eval=FALSE, purl=FALSE}
 ## This is the correct syntax for adding layers
-interviews_plot +
+data_plot +
     geom_point()
 
 ## This will not add the new layer and will return an error message
-interviews_plot
+data_plot
 + geom_point()
 ```
 
@@ -184,8 +167,8 @@ Building plots with **`ggplot2`** is typically an iterative process. We start by
 defining the dataset we'll use, lay out the axes, and choose a geom:
 
 ```{r create-ggplot-object, purl=FALSE}
-interviews_plotting %>%
-    ggplot(aes(x = no_membrs, y = number_items)) +
+data %>%
+    ggplot(aes(x = TID, y = INDHOLD)) +
     geom_point()
 ```
 
@@ -216,8 +199,8 @@ problem, as the points where there are overlapping observations are darker (as
 opposed to lighter gray):
 
 ```{r adding-transparency, purl=FALSE}
-interviews_plotting %>%
-    ggplot(aes(x = no_membrs, y = number_items)) +
+data %>%
+    ggplot(aes(x = TID, y = INDHOLD)) +
     geom_point(alpha = 0.5)
 ```
 
@@ -233,8 +216,8 @@ We can jitter our points using the `geom_jitter()` function instead of the
 `geom_point()`  function, as seen below:
 
 ```{r adding-jitter, purl=FALSE}
-interviews_plotting %>%
-    ggplot(aes(x = no_membrs, y = number_items)) +
+data %>%
+    ggplot(aes(x = TID, y = INDHOLD)) +
     geom_jitter()
 ```
 The `geom_jitter()` function allows for us to specify the amount of random
@@ -245,8 +228,8 @@ would like *less* spread in our jitter than was default, we should pick values
 between 0.1 and 0.4. Experiment with the values to see how your plot changes.
 
 ```{r adding-width-height, purl=FALSE}
-interviews_plotting %>%
-    ggplot(aes(x = no_membrs, y = number_items)) +
+data %>%
+    ggplot(aes(x = TID, y = INDHOLD)) +
     geom_jitter(alpha = 0.5,
                 width = 0.2,
                 height = 0.2)
@@ -256,8 +239,8 @@ For our final change, we can also add colours for all the points by specifying
 a `color` argument inside the `geom_jitter()` function:
 
 ```{r adding-colors, purl=FALSE}
-interviews_plotting %>%
-    ggplot(aes(x = no_membrs, y = number_items)) +
+data %>%
+    ggplot(aes(x = TID, y = INDHOLD)) +
     geom_jitter(alpha = 0.5,
                 color = "blue",
                 width = 0.2,
