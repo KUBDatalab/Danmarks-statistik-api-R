@@ -303,4 +303,14 @@ We mutate the column "TID" into the result of running yearquarter() on the
 column "TID". And now we have a data frame that we can do interesting things 
 with.
 
+Now might be a good time to save the data.
+
+~~~
+write_csv2(data, "data.csv")
+~~~
+{: .language-r}
+
+Note that we are using write_csv2() here. We do not have decimalpoints in this
+data, but other data might have.
+
 {% include links.md %}
