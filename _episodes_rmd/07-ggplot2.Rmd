@@ -120,22 +120,46 @@ data %>%
     ggplot(aes(x = TID, y = INDHOLD)) +
     geom_point()
 ```
+What we might note that the fact that we have ALL the municipalites leads to a
+LOT of points.
+
+We could have done that when we extracted the data from Statistics Denmark.
+Alternatively we can do it now.
+Let us pull out all the regions.
+
+```{r}
+plot_data <- data %>% 
+  filter(str_detect(OMRÅDE, "Region"))
+```
+
+We use the filter function - we have seen before. And it returns the 
+rows in the data where the expression we write in the paranthesis is true.
+
+From the package "stringr", included in the tidyverse package, we get the 
+function str_detect().
+
+It detects if the string "Region" is present in the variable OMRÅDE. If it
+is, "Region" is detected, the expression is true, and filter() leaves the row.
+
+Back to **`ggplot2`**
 
 The `+` in the **`ggplot2`** package is particularly useful because it allows
 you to modify existing `ggplot` objects. This means you can easily set up plot
 templates and conveniently explore different types of plots, so the above plot
 can also be generated with code like this, similar to the "intermediate steps" 
-approach in the previous lesson:
+approach in the previous lesson. We are now plotting the plot_data dataframe
+instead:
 
 ```{r first-ggplot-with-plus, eval=FALSE, purl=FALSE}
 # Assign plot to a variable
-data_plot <- data %>%
+data_plot <- plot_data %>%
     ggplot(aes(x = TID, y = INDHOLD))
 
 # Draw the plot as a dot plot
 data_plot +
     geom_point()
 ```
+A lot better.
 
 > ## Notes
 >
@@ -167,87 +191,23 @@ Building plots with **`ggplot2`** is typically an iterative process. We start by
 defining the dataset we'll use, lay out the axes, and choose a geom:
 
 ```{r create-ggplot-object, purl=FALSE}
-data %>%
+plot_data %>%
     ggplot(aes(x = TID, y = INDHOLD)) +
     geom_point()
 ```
 
-Then, we start modifying this plot to extract more information from it. For
-instance, when inspecting the plot we notice that points only appear at the 
-intersection of whole numbers of `no_membrs` and `number_items`. Also, from a 
-rough estimate, it looks like there are far fewer dots on the plot than there 
-rows in our dataframe. This should lead us to believe that there may be multiple
-observations plotted on top of each other (e.g. three observations where 
-`no_membrs` is 3 and `number_items` is 1). 
+Then, we start modifying this plot to extract more information from it. 
+We might want to color the points, based on the marriage status.
 
-There are two main ways to alleviate overplotting issues: 
-1. changing the transparency of the points 
-2. jittering the location of the points
-
-Let's first explore option 1, changing the transparency of the points. What we 
-mean when we say "transparency" we mean the opacity of point, or your ability to 
-see through the point. We can control the transparency of the points with the 
-`alpha` argument to `geom_point`. Values of `alpha` range from 0 to 1, with
-lower values corresponding to more transparent colors (an `alpha` of 1 is the 
-default value). Specifically, an alpha of 0.1, would make a point one-tenth as 
-opaque as a normal point. Stated differently ten points stacked on top of 
-each other would correspond to a normal point.
-
-Here, we change the `alpha` to 0.5, in an attempt to help fix the overplotting. 
-While the overplotting isn't solved, adding transparency begins to address this
-problem, as the points where there are overlapping observations are darker (as 
-opposed to lighter gray):
-
-```{r adding-transparency, purl=FALSE}
-data %>%
-    ggplot(aes(x = TID, y = INDHOLD)) +
-    geom_point(alpha = 0.5)
-```
-
-That only helped a little bit with the overplotting problem, so let's try option
-two. We can jitter the points on the plot, so that we can see each point in the
-locations where there are overlapping points. Jittering introduces a little bit
-of randomness into the position of our points. You can think of this process as 
-taking the overplotted graph and giving it a tiny shake. The points will move a 
-little bit side-to-side and up-and-down, but their position from the original 
-plot won't dramatically change. 
-
-We can jitter our points using the `geom_jitter()` function instead of the
-`geom_point()`  function, as seen below:
-
-```{r adding-jitter, purl=FALSE}
-data %>%
-    ggplot(aes(x = TID, y = INDHOLD)) +
-    geom_jitter()
-```
-The `geom_jitter()` function allows for us to specify the amount of random
-motion in the jitter, using the `width` and `height` arguments. When we don't 
-specify values for `width` and `height`, `geom_jitter()` defaults to 40% of the
-resolution of the data (the smallest change that can be measured). Hence, if we 
-would like *less* spread in our jitter than was default, we should pick values 
-between 0.1 and 0.4. Experiment with the values to see how your plot changes.
-
-```{r adding-width-height, purl=FALSE}
-data %>%
-    ggplot(aes(x = TID, y = INDHOLD)) +
-    geom_jitter(alpha = 0.5,
-                width = 0.2,
-                height = 0.2)
-```
-
-For our final change, we can also add colours for all the points by specifying 
-a `color` argument inside the `geom_jitter()` function:
-
+We place the color argument within the aes() function, because we want to
+map the values in "CIVILSTAND" to the 
 ```{r adding-colors, purl=FALSE}
-data %>%
-    ggplot(aes(x = TID, y = INDHOLD)) +
-    geom_jitter(alpha = 0.5,
-                color = "blue",
-                width = 0.2,
-                height = 0.2)
+plot_data %>%
+    ggplot(aes(x = TID, y = INDHOLD, color = CIVILSTAND)) +
+    geom_point()
 ```
 
-To colour each village in the plot differently, you could use a vector as an input 
+To colour each marriage status in the plot differently, you could use a vector as an input 
 to the argument **`color`**.  However, because we are now mapping features of the
 data to a colour, instead of setting one colour for all points, the colour of the 
 points now needs to be set inside a call to the **`aes`** function. When we map 
@@ -257,60 +217,40 @@ continue to specify the value of **`alpha`**, **`width`**, and **`height`**
 outside of the **`aes`** function because we are using the same value for 
 every point. ggplot2 understands both the Commonwealth English and 
 American English spellings for colour, i.e., you can use either `color` 
-or `colour`. Here is an example where we color points by the **`village`** 
-of the observation:
+or `colour`. The plot aboge is an example where we color points by 
+the **`CIVILSTAND`** of the observation.
 
 
-```{r color-by-species, purl=FALSE}
-interviews_plotting %>%
-    ggplot(aes(x = no_membrs, y = number_items)) +
-    geom_jitter(aes(color = village), alpha = 0.5, width = 0.2, height = 0.2)
+## Faceting
+
+We still have a lot of information
+Rather than creating a single plot with side-by-side bars for each
+village, we may want to create multiple plot, where each plot shows the
+data for a single village. This would be especially useful if we had
+a large number of villages that we had sampled, as a large number of
+side-by-side bars will become more difficult to read.
+
+**`ggplot2`** has a special technique called *faceting* that allows the 
+user to split one plot into multiple plots based on a factor included 
+in the dataset. We will use it to split our barplot of housing type 
+proportion by village so that each village has its own panel in a 
+multi-panel plot:
+
+```{r barplot-faceting}
+percent_wall_type %>%
+    ggplot(aes(x = respondent_wall_type, y = percent)) +
+    geom_bar(stat = "identity", position = "dodge") +
+    labs(title="Proportion of wall type by village",
+         x="Wall Type",
+         y="Percent") +
+    facet_wrap(~ village)
 ```
 
-There appears to be a positive trend between number of household
-members and number of items owned (from the list provided). Additionally, 
-this trend does not appear to be different by village.
+Click the "Zoom" button in your RStudio plots pane to view a larger
+version of this plot.
 
-> ## Notes 
-> 
-> As you will learn, there are multiple ways to plot the a relationship
-> between variables. Another way to plot data with overlapping points is 
-> to use the `geom_count` plotting function. The `geom_count()`  function 
-> makes the size of each point representative of the number of data items 
-> of that type and the legend gives point sizes associated to particular 
-> numbers of items. 
->
-> ```{r color-by-species-notes, purl=FALSE}
-> interviews_plotting %>% 
->    ggplot(aes(x = no_membrs, y = number_items, color = village)) +
->    geom_count()
-> ```    
 
-{: .callout}
 
-> ## Exercise
->
-> Use what you just learned to create a scatter plot of `rooms` by `village`
-> with the `respondent_wall_type` showing in different colours. Does this 
-> seem like a good way to display the relationship between these variables? 
-> What other kinds of plots might you use to show this type of data?
->
-> > ## Solution
-> >
-> > ```{r scatter-challenge, answer=TRUE, purl=FALSE}
-> > interviews_plotting %>%
-> >     ggplot(aes(x = village, y = rooms)) +
-> >     geom_jitter(aes(color = respondent_wall_type),
-> >		    alpha = 0.5,
-> > 		    width = 0.2,
-> > 		    height = 0.2)
-> > ```
-> >
-> > This is not a great way to show this type of data because it is difficult to
-> > distinguish between villages. What other plot types could help you visualize
-> > this relationship better?
-> {: .solution}
-{: .challenge}
 
 
 ## Boxplot
@@ -319,8 +259,8 @@ We can use boxplots to visualize the distribution of rooms for each
 wall type:
 
 ```{r boxplot, purl=FALSE}
-interviews_plotting %>%
-    ggplot(aes(x = respondent_wall_type, y = rooms)) +
+plot_data %>%
+    ggplot(aes(x = CIVILSTAND, y = INDHOLD)) +
     geom_boxplot()
 ```
 
@@ -506,32 +446,6 @@ percent_wall_type %>%
          y = "Percent")
 ```
 
-## Faceting
-
-Rather than creating a single plot with side-by-side bars for each
-village, we may want to create multiple plot, where each plot shows the
-data for a single village. This would be especially useful if we had
-a large number of villages that we had sampled, as a large number of
-side-by-side bars will become more difficult to read.
-
-**`ggplot2`** has a special technique called *faceting* that allows the 
-user to split one plot into multiple plots based on a factor included 
-in the dataset. We will use it to split our barplot of housing type 
-proportion by village so that each village has its own panel in a 
-multi-panel plot:
-
-```{r barplot-faceting}
-percent_wall_type %>%
-    ggplot(aes(x = respondent_wall_type, y = percent)) +
-    geom_bar(stat = "identity", position = "dodge") +
-    labs(title="Proportion of wall type by village",
-         x="Wall Type",
-         y="Percent") +
-    facet_wrap(~ village)
-```
-
-Click the "Zoom" button in your RStudio plots pane to view a larger
-version of this plot.
 
 Usually plots with white background look more readable when printed.  We can set
 the background to white using the function `theme_bw()`. Additionally, you can remove
