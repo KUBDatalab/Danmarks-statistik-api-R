@@ -271,34 +271,30 @@ the **`CIVILSTAND`** of the observation.
 ## Faceting
 
 We still have a lot of information
-Rather than creating a single plot with side-by-side bars for each
-village, we may want to create multiple plot, where each plot shows the
-data for a single village. This would be especially useful if we had
-a large number of villages that we had sampled, as a large number of
-side-by-side bars will become more difficult to read.
+Rather than creating a single plot with points for each
+region, we may want to create multiple plot, where each plot shows the
+data for a single region. 
 
 **`ggplot2`** has a special technique called *faceting* that allows the 
 user to split one plot into multiple plots based on a factor included 
-in the dataset. We will use it to split our barplot of housing type 
-proportion by village so that each village has its own panel in a 
+in the dataset. We will use it to split our plot of **CIVILSTAND** 
+against time, by **OMRÅDE**, so each region has its own panel in a 
 multi-panel plot:
 
 
+
 ~~~
-percent_wall_type %>%
-    ggplot(aes(x = respondent_wall_type, y = percent)) +
-    geom_bar(stat = "identity", position = "dodge") +
-    labs(title="Proportion of wall type by village",
-         x="Wall Type",
-         y="Percent") +
-    facet_wrap(~ village)
+plot_data %>%
+    ggplot(aes(x = TID, y = INDHOLD, color = CIVILSTAND)) +
+    geom_point() +
+    facet_wrap(~OMRÅDE)
 ~~~
 {: .language-r}
 
 
 
 ~~~
-Error in ggplot(., aes(x = respondent_wall_type, y = percent)): object 'percent_wall_type' not found
+Error in ggplot(., aes(x = TID, y = INDHOLD, color = CIVILSTAND)): object 'plot_data' not found
 ~~~
 {: .error}
 
@@ -311,8 +307,8 @@ version of this plot.
 
 ## Boxplot
 
-We can use boxplots to visualize the distribution of rooms for each
-wall type:
+We can use boxplots to visualize the distribution of observations for each 
+**CIVILSTAND**:
 
 
 ~~~
@@ -328,15 +324,18 @@ plot_data %>%
 Error in ggplot(., aes(x = CIVILSTAND, y = INDHOLD)): object 'plot_data' not found
 ~~~
 {: .error}
+Let us be frank - a boxplot of these aggregated data is not really that 
+useful. Boxplots are however so useful, that it is relevant to show how they 
+are made.
 
 By adding points to a boxplot, we can have a better idea of the number of
 measurements and of their distribution:
 
 
 ~~~
-interviews_plotting %>%
-    ggplot(aes(x = respondent_wall_type, y = rooms)) +
-    geom_boxplot(alpha = 0) +
+plot_data %>%
+    ggplot(aes(x = CIVILSTAND, y = INDHOLD)) +
+    geom_boxplot() +
     geom_jitter(alpha = 0.5,
     		color = "tomato",
     		width = 0.2,
@@ -347,91 +346,19 @@ interviews_plotting %>%
 
 
 ~~~
-Error in ggplot(., aes(x = respondent_wall_type, y = rooms)): object 'interviews_plotting' not found
+Error in ggplot(., aes(x = CIVILSTAND, y = INDHOLD)): object 'plot_data' not found
 ~~~
 {: .error}
+Jitter is a special way of plotting points. When we plot the points at their
+exact location, we risk that some of the points overlap. geom_jitter adds a small 
+bit of noise to the data, in order to spread them out. That way we can better see 
+individual points.
 
-We can see that muddaub houses and sunbrick houses tend to be smaller than
-burntbrick houses.
 
 Notice how the  boxplot layer is behind the jitter layer? What do you need to
 change in the code to put the boxplot in behind the points such that it's not 
 hidden?
 
-> ## Exercise
->
-> Boxplots are useful summaries, but hide the *shape* of the distribution. For
-> example, if the distribution is bimodal, we would not see it in a
-> boxplot. An alternative to the boxplot is the violin plot, where the shape
-> (of the density of points) is drawn.
->
-> - Replace the box plot with a violin plot; see `geom_violin()`.
->
-> > ## Solution
-> >
-> > 
-> > ~~~
-> > interviews_plotting %>%
-> >   ggplot(aes(x = respondent_wall_type, y = rooms)) +
-> >   geom_violin(alpha = 0) +
-> >   geom_jitter(alpha = 0.5, color = "tomato")
-> > ~~~
-> > {: .language-r}
-> > 
-> > 
-> > 
-> > ~~~
-> > Error in ggplot(., aes(x = respondent_wall_type, y = rooms)): object 'interviews_plotting' not found
-> > ~~~
-> > {: .error}
-> {: .solution}
->
-> So far, we've looked at the distribution of room number within wall type. Try
-> making a new plot to explore the distribution of another variable within wall
-> type.
->
-> - Create a boxplot for `liv_count` for each wall type. Overlay the boxplot
->   layer on a jitter layer to show actual measurements.
->
-> > ## Solution
-> > 
-> > ~~~
-> > interviews_plotting %>%
-> >    ggplot(aes(x = respondent_wall_type, y = liv_count)) +
-> >    geom_boxplot(alpha = 0) +
-> >    geom_jitter(alpha = 0.5, width = 0.2, height = 0.2)
-> > ~~~
-> > {: .language-r}
-> > 
-> > 
-> > 
-> > ~~~
-> > Error in ggplot(., aes(x = respondent_wall_type, y = liv_count)): object 'interviews_plotting' not found
-> > ~~~
-> > {: .error}
-> {: .solution}
->
-> - Add colour to the data points on your boxplot according to whether the
->   respondent is a member of an irrigation association (`memb_assoc`).
->
-> > ## Solution
-> > 
-> > ~~~
-> > interviews_plotting %>%
-> >   ggplot(aes(x = respondent_wall_type, y = liv_count)) +
-> >   geom_boxplot(alpha = 0) +
-> >   geom_jitter(aes(color = memb_assoc), alpha = 0.5, width = 0.2, height = 0.2)
-> > ~~~
-> > {: .language-r}
-> > 
-> > 
-> > 
-> > ~~~
-> > Error in ggplot(., aes(x = respondent_wall_type, y = liv_count)): object 'interviews_plotting' not found
-> > ~~~
-> > {: .error}
-> {: .solution}
-{: .challenge}
 
 ## Barplots
 
@@ -441,7 +368,7 @@ value of x (in this case, wall type) appears in the dataset.
 
 
 ~~~
-interviews_plotting %>%
+plot_data %>%
     ggplot(aes(x = respondent_wall_type)) +
     geom_bar()
 ~~~
@@ -450,7 +377,7 @@ interviews_plotting %>%
 
 
 ~~~
-Error in ggplot(., aes(x = respondent_wall_type)): object 'interviews_plotting' not found
+Error in ggplot(., aes(x = respondent_wall_type)): object 'plot_data' not found
 ~~~
 {: .error}
 
@@ -459,7 +386,7 @@ the portion of each count that is from each village.
 
 
 ~~~
-interviews_plotting %>%
+plot_data %>%
     ggplot(aes(x = respondent_wall_type)) +
     geom_bar(aes(fill = village))
 ~~~
@@ -468,7 +395,7 @@ interviews_plotting %>%
 
 
 ~~~
-Error in ggplot(., aes(x = respondent_wall_type)): object 'interviews_plotting' not found
+Error in ggplot(., aes(x = respondent_wall_type)): object 'plot_data' not found
 ~~~
 {: .error}
 
@@ -480,7 +407,7 @@ argument for `geom_bar()` and setting it to "dodge".
 
 
 ~~~
-interviews_plotting %>%
+plot_data %>%
     ggplot(aes(x = respondent_wall_type)) +
     geom_bar(aes(fill = village), position = "dodge")
 ~~~
@@ -489,7 +416,7 @@ interviews_plotting %>%
 
 
 ~~~
-Error in ggplot(., aes(x = respondent_wall_type)): object 'interviews_plotting' not found
+Error in ggplot(., aes(x = respondent_wall_type)): object 'plot_data' not found
 ~~~
 {: .error}
 
@@ -504,7 +431,7 @@ houses with cement walls, as there was only one in the dataset.
 
 
 ~~~
-percent_wall_type <- interviews_plotting %>%
+percent_wall_type <- plot_data %>%
     filter(respondent_wall_type != "cement") %>%
     count(village, respondent_wall_type) %>%
     group_by(village) %>%
@@ -516,7 +443,7 @@ percent_wall_type <- interviews_plotting %>%
 
 
 ~~~
-Error in filter(., respondent_wall_type != "cement"): object 'interviews_plotting' not found
+Error in filter(., respondent_wall_type != "cement"): object 'plot_data' not found
 ~~~
 {: .error}
 
