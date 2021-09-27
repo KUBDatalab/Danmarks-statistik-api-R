@@ -4,6 +4,7 @@ output:
   html_document:
     df_print: paged
     code_download: true
+    output: md_document
 ---
 
 This document contains all of the functions that we have covered thus far in the
