@@ -134,6 +134,10 @@ install.packages("danstat")
 After installation, we load the library using the library function. And then 
 we can access the functions included in the library:
 
+The get_subjects() function sends a request to the Statistics Denmark API, asking
+for a list of the subjects. The information is returned to our script, and the
+get_subjects() function presents us with a dataframe containing the information.
+
 
 ~~~
 library(danstat)
@@ -159,27 +163,19 @@ subjects
 ~~~
 {: .output}
 
+
 We get the 13 major subjects from Statistics Denmark. Each of them have sub-subjects.
 
-Let us try to get the sub-subjects from the subject 02 - containing information
+If we want to take a closer look at the 
+subdivisions of a given subject, we use the get_subjects() function again,
+this time specifying which subject we are interested in:
+
+Let us try to get the sub-subjects from the subject 1 - containing information
 about populations and elections:
 
 
 ~~~
-sub_subjects <- get_subjects(subjects = "02")
-~~~
-{: .language-r}
-
-
-
-~~~
-Error: API did not return text/json
-~~~
-{: .error}
-
-
-
-~~~
+sub_subjects <- get_subjects(subjects = 1)
 sub_subjects
 ~~~
 {: .language-r}
@@ -187,46 +183,18 @@ sub_subjects
 
 
 ~~~
-Error in eval(expr, envir, enclos): object 'sub_subjects' not found
+  id description active hasSubjects
+1  1      People   TRUE        TRUE
+                                                                                                                                                                                                                                                      subjects
+1 3401, 3407, 3410, 3415, 3412, 3411, 3428, 3409, Population, Households, families and children, Migration, Housing, Health, Democracy, National church, Names, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE
 ~~~
-{: .error}
+{: .output}
 
 
 
-The get_subjects() function sends a request to the Statistics Denmark API, asking
-for a list of the subjects. The information is returned to our script, and the
-get_subjects() function presents us with a dataframe containing the information.
-
-Each subject (may) have sub-subjects. If we want to take a closer look at the 
-subdivisions of a given subject, we use the get_subjects() function again,
-this time specifying which subject we are interested in:
-
-
-~~~
-subject <- get_subjects("02")
-~~~
-{: .language-r}
 
 
 
-~~~
-Error: API did not return text/json
-~~~
-{: .error}
-
-
-
-~~~
-subject
-~~~
-{: .language-r}
-
-
-
-~~~
-Error in eval(expr, envir, enclos): object 'subject' not found
-~~~
-{: .error}
 
 
 The result is a bit complicated. The column "subjects" in the resulting dataframe
@@ -235,36 +203,32 @@ column in a dataframe:
 
 
 ~~~
-subject$subjects
+sub_subjects$subjects
 ~~~
 {: .language-r}
 
 
 
 ~~~
-Error in eval(expr, envir, enclos): object 'subject' not found
+[[1]]
+    id                       description active hasSubjects subjects
+1 3401                        Population   TRUE        TRUE     NULL
+2 3407 Households, families and children   TRUE        TRUE     NULL
+3 3410                         Migration   TRUE        TRUE     NULL
+4 3415                           Housing   TRUE        TRUE     NULL
+5 3412                            Health   TRUE        TRUE     NULL
+6 3411                         Democracy   TRUE        TRUE     NULL
+7 3428                   National church   TRUE        TRUE     NULL
+8 3409                             Names   TRUE        TRUE     NULL
 ~~~
-{: .error}
+{: .output}
 
 Those sub-subjects have their own subjects! Lets get to the bottom of this, and
 use 2401, Population and population projections as an example:
 
 
 ~~~
-sub_sub_subjects <- get_subjects("2401")
-~~~
-{: .language-r}
-
-
-
-~~~
-Error: API did not return text/json
-~~~
-{: .error}
-
-
-
-~~~
+sub_sub_subjects <- get_subjects("3401")
 sub_sub_subjects$subjects
 ~~~
 {: .language-r}
@@ -272,18 +236,27 @@ sub_sub_subjects$subjects
 
 
 ~~~
-Error in eval(expr, envir, enclos): object 'sub_sub_subjects' not found
+[[1]]
+     id                      description active hasSubjects subjects
+1 20021               Population figures   TRUE       FALSE     NULL
+2 20024 Immigrants and their descendants   TRUE       FALSE     NULL
+3 20022           Population projections   TRUE       FALSE     NULL
+4 20019                        Adoptions  FALSE       FALSE     NULL
+5 20017                           Births   TRUE       FALSE     NULL
+6 20018                        Fertility   TRUE       FALSE     NULL
+7 20014                           Deaths   TRUE       FALSE     NULL
+8 20015                  Life expectancy   TRUE       FALSE     NULL
 ~~~
-{: .error}
+{: .output}
 Now we are at the bottom. We can see in the column "hasSubjects" that there 
 are no sub_sub_sub_subjects. 
 
 The hierarchy is:
-02 Population and elections
+1 Population and elections
 | 
-2401	Population and population projections
+3401	Population 
 |
-10021	Population in Denmark
+20021	Population figures
 
 The final sub_sub_subject contains a number of tables, that actually 
 contains the data we are looking for.
@@ -298,16 +271,9 @@ dataframes, each of those containing several dataframes.
 We recommend that you do not try it, but this is how it is done:
 
 ~~~
-lots_of_subjects <- get_subjects("02", recursive = T, include_tables = T)
+lots_of_subjects <- get_subjects(1, recursive = T, include_tables = T)
 ~~~
 {: .language-r}
-
-
-
-~~~
-Error: API did not return text/json
-~~~
-{: .error}
 
 The "recursive = T" parameter means that get_subjects will retrieve 
 the subjects of the subjects, and then the subjects of those subjects.
@@ -316,7 +282,7 @@ the subjects of the subjects, and then the subjects of those subjects.
 
 But we ended up with a sub_sub_subject, 
 
-10021	Population in Denmark
+20021	Population figures
 
 How do we find out which tables exists in this subject?
 
@@ -326,20 +292,7 @@ tables available for a given subject.
 
 
 ~~~
-tables <- get_tables(subjects="10021")
-~~~
-{: .language-r}
-
-
-
-~~~
-Error: API did not return text/json
-~~~
-{: .error}
-
-
-
-~~~
+tables <- get_tables(subjects="20021")
 tables
 ~~~
 {: .language-r}
@@ -347,9 +300,68 @@ tables
 
 
 ~~~
-Error in eval(expr, envir, enclos): object 'tables' not found
+         id                                                          text
+1    FOLK1A                    Population at the first day of the quarter
+2     FOLK3                                         Population 1. January
+3      BEF5                                         Population 1. January
+4        FT                          Population figures from the censuses
+5       BY1                                         Population 1. January
+6       BY2                                         Population 1. January
+7       BY3                                         Population 1. January
+8       KM1                    Population at the first day of the quarter
+9     SOGN1                                         Population 1. January
+10   SOGN10                                         Population 1. January
+11     BEF4                                         Population 1. January
+12    BEF5F People born in Faroe Islands and living in Denmark 1. January
+13    BEF5G     People born in Greenland and living in Denmark 1. January
+14    BEV22                   Summary vital statistics (provisional data)
+15   BEV107                                      Summary vital statistics
+16 KMSTA003                                      Summary vital statistics
+17   GALDER                                                   Average age
+18 KMGALDER                                                   Average age
+19    HISB3                                      Summary vital statistics
+      unit             updated firstPeriod latestPeriod active
+1   Number 2021-08-11T08:00:00      2008Q1       2021Q3   TRUE
+2   Number 2021-02-11T08:00:00        2008         2021   TRUE
+3   Number 2021-02-11T08:00:00        1990         2021   TRUE
+4   Number 2021-02-11T08:00:00        1769         2021   TRUE
+5   Number 2021-04-29T08:00:00        2010         2021   TRUE
+6   Number 2021-04-29T08:00:00        2010         2021   TRUE
+7        - 2021-04-29T08:00:00        2017         2021   TRUE
+8   Number 2021-08-11T08:00:00      2007Q1       2021Q3   TRUE
+9   Number 2021-02-11T08:00:00        2010         2021   TRUE
+10  Number 2021-09-22T08:00:00        1925         2021   TRUE
+11  Number 2021-03-31T08:00:00        1901         2021   TRUE
+12  Number 2021-02-11T08:00:00        2008         2021   TRUE
+13  Number 2021-02-11T08:00:00        2008         2021   TRUE
+14  Number 2021-08-11T08:00:00      2007Q2       2021Q2   TRUE
+15  Number 2021-02-11T08:00:00        2006         2020   TRUE
+16  Number 2021-02-11T08:00:00        2015         2020   TRUE
+17 Average 2021-02-11T08:00:00        2005         2021   TRUE
+18 Average 2021-02-11T08:00:00        2007         2021   TRUE
+19  Number 2021-02-12T08:00:00        1901         2021   TRUE
+                                                              variables
+1                                region, sex, age, marital status, time
+2                        day of birth, birth month, year of birth, time
+3                                      sex, age, country of birth, time
+4                                                   national part, time
+5                                 urban and rural areas, age, sex, time
+6                               municipality, city size, age, sex, time
+7  urban and rural areas, population, area and population density, time
+8                           parish, member of the National Church, time
+9                                                parish, sex, age, time
+10                                                         parish, time
+11                                                        islands, time
+12                               sex, age, parents place of birth, time
+13                               sex, age, parents place of birth, time
+14                                  region, type of movement, sex, time
+15                                  region, type of movement, sex, time
+16                                              parish, movements, time
+17                                              municipality, sex, time
+18                                                    parish, sex, time
+19                                               type of movement, time
 ~~~
-{: .error}
+{: .output}
 
 We get at lot of information here. The id identifies the table, text gives a 
 description of the table that humans can understand. When the table was last
