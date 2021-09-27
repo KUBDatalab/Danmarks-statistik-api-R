@@ -28,6 +28,7 @@ source("../bin/chunk-options.R")
 knitr_fig_path("04-")
 source("../bin/download_data.R")
 library(tidyverse)
+library(tsibble)
 ```
 
 Nice data. How does it look?
@@ -51,7 +52,7 @@ If not still in the workspace, load the data we saved in the previous lesson.
 
 
 ```{r load-data, purl=FALSE, eval=F}
-data <- read_csv2("../data/SD_data.csv")
+SD_data <- read_csv2("../data/SD_data.csv")
 ```
 
 
@@ -95,14 +96,14 @@ Remember from the last lesson that the pipe operator `%>%` places the result of 
 - use the `ggplot()` function and bind the plot to a specific data frame.
 
 ```{r ggplot-steps-1, eval=FALSE, purl=FALSE}
-data %>%
+SD_data %>%
     ggplot()
 ```
 
 - define a mapping (using the aesthetic (`aes`) function), by selecting the variables to be plotted and specifying how to present them in the graph, e.g. as x/y positions or characteristics such as size, shape, color, etc.
 
 ```{r ggplot-steps-2, eval=FALSE, purl=FALSE}
-data %>%
+SD_data %>%
     ggplot(aes(x = TID, y = INDHOLD))
 ```
 
@@ -117,7 +118,7 @@ common ones today, including:
 To add a geom to the plot use the `+` operator. Because we have two continuous variables, let's use `geom_point()` first:
 
 ```{r first-ggplot, purl=FALSE}
-data %>%
+SD_data %>%
     ggplot(aes(x = TID, y = INDHOLD)) +
     geom_point()
 ```
@@ -129,7 +130,7 @@ Alternatively we can do it now.
 Let us pull out all the regions.
 
 ```{r}
-plot_data <- data %>% 
+plot_data <- SD_data %>% 
   filter(str_detect(OMRÅDE, "Region"))
 ```
 
@@ -423,53 +424,5 @@ plot_data %>%
 ```
 
 
-## **`ggplot2`** themes
-
-In addition to `theme_bw()`, which changes the plot background to white,
-**`ggplot2`** comes with several other themes which can be useful to quickly
-change the look of your visualization. The complete list of themes is available
-at <https://ggplot2.tidyverse.org/reference/ggtheme.html>. `theme_minimal()` and
-`theme_light()` are popular, and `theme_void()` can be useful as a starting
-point to create a new hand-crafted theme.
-
-The
-[ggthemes](https://jrnold.github.io/ggthemes/reference/index.html)
-package provides a wide variety of options (including an Excel 2003 theme). The
-[**`ggplot2`** extensions website](https://exts.ggplot2.tidyverse.org/) provides a list
-of packages that extend the capabilities of **`ggplot2`**, including additional
-themes.
-
-
-
-After creating your plot, you can save it to a file in your favourite format. 
-The Export tab in the **Plot** pane in RStudio will save your plots at low 
-resolution, which will not be accepted by many journals and will not scale 
-well for posters.
-
-Instead, use the `ggsave()` function, which allows you to easily change the 
-dimension and resolution of your plot by adjusting the appropriate arguments 
-(`width`, `height` and `dpi`).
-
-Make sure you have the `fig_output/` folder in your working directory.
-
-```{r ggsave-example, eval=FALSE, purl=FALSE}
-my_plot <- percent_items %>%
-    ggplot(aes(x = village, y = percent)) +
-    geom_bar(stat = "identity", position = "dodge") +
-    facet_wrap(~ items) +
-    labs(title = "Percent of respondents in each village \n who owned each item",
-         x = "Village",
-         y = "Percent of Respondents") +
-    theme_bw() +
-    theme(axis.text.x = element_text(color = "grey20", size = 12, angle = 45,
-                                     hjust = 0.5, vjust = 0.5),
-          axis.text.y = element_text(color = "grey20", size = 12),
-          text = element_text(size = 16),
-          plot.title = element_text(hjust = 0.5))
-
-ggsave("fig_output/name_of_file.png", my_plot, width = 15, height = 10)
-```
-
-Note: The parameters `width` and `height` also determine the font size in the saved plot.
 
 {% include links.md %}
