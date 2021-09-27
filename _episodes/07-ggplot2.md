@@ -56,6 +56,39 @@ SD_data <- read_csv2("../data/SD_data.csv")
 {: .language-r}
 
 
+
+~~~
+ℹ Using "','" as decimal and "'.'" as grouping mark. Use `read_delim()` for more control.
+~~~
+{: .output}
+
+
+
+~~~
+Rows: 23100 Columns: 4
+~~~
+{: .output}
+
+
+
+~~~
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ";"
+chr (3): OMRÅDE, CIVILSTAND, TID
+dbl (1): INDHOLD
+~~~
+{: .output}
+
+
+
+~~~
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+~~~
+{: .output}
+
+
 ## Plotting with **`ggplot2`**
 
 **`ggplot2`** is a plotting package that makes it simple to create complex plots
@@ -129,12 +162,7 @@ SD_data %>%
 ~~~
 {: .language-r}
 
-
-
-~~~
-Error in ggplot(., aes(x = TID, y = INDHOLD)): object 'SD_data' not found
-~~~
-{: .error}
+<img src="../fig/rmd-04-first-ggplot-1.png" title="plot of chunk first-ggplot" alt="plot of chunk first-ggplot" width="612" style="display: block; margin: auto;" />
 What we might note that the fact that we have ALL the municipalites leads to a
 LOT of points.
 
@@ -148,13 +176,6 @@ plot_data <- SD_data %>%
   filter(str_detect(OMRÅDE, "Region"))
 ~~~
 {: .language-r}
-
-
-
-~~~
-Error in filter(., str_detect(OMRÅDE, "Region")): object 'SD_data' not found
-~~~
-{: .error}
 
 We use the filter function - we have seen before. And it returns the 
 rows in the data where the expression we write in the paranthesis is true.
@@ -226,12 +247,7 @@ plot_data %>%
 ~~~
 {: .language-r}
 
-
-
-~~~
-Error in ggplot(., aes(x = TID, y = INDHOLD)): object 'plot_data' not found
-~~~
-{: .error}
+<img src="../fig/rmd-04-create-ggplot-object-1.png" title="plot of chunk create-ggplot-object" alt="plot of chunk create-ggplot-object" width="612" style="display: block; margin: auto;" />
 
 Then, we start modifying this plot to extract more information from it. 
 We might want to color the points, based on the marriage status.
@@ -246,12 +262,7 @@ plot_data %>%
 ~~~
 {: .language-r}
 
-
-
-~~~
-Error in ggplot(., aes(x = TID, y = INDHOLD, color = CIVILSTAND)): object 'plot_data' not found
-~~~
-{: .error}
+<img src="../fig/rmd-04-adding-colors-1.png" title="plot of chunk adding-colors" alt="plot of chunk adding-colors" width="612" style="display: block; margin: auto;" />
 
 To colour each marriage status in the plot differently, you could use a vector as an input 
 to the argument **`color`**.  However, because we are now mapping features of the
@@ -290,12 +301,7 @@ plot_data %>%
 ~~~
 {: .language-r}
 
-
-
-~~~
-Error in ggplot(., aes(x = TID, y = INDHOLD, color = CIVILSTAND)): object 'plot_data' not found
-~~~
-{: .error}
+<img src="../fig/rmd-04-barplot-faceting-1.png" title="plot of chunk barplot-faceting" alt="plot of chunk barplot-faceting" width="612" style="display: block; margin: auto;" />
 
 Click the "Zoom" button in your RStudio plots pane to view a larger
 version of this plot.
@@ -317,12 +323,7 @@ plot_data %>%
 ~~~
 {: .language-r}
 
-
-
-~~~
-Error in ggplot(., aes(x = CIVILSTAND, y = INDHOLD)): object 'plot_data' not found
-~~~
-{: .error}
+<img src="../fig/rmd-04-boxplot-1.png" title="plot of chunk boxplot" alt="plot of chunk boxplot" width="612" style="display: block; margin: auto;" />
 Let us be frank - a boxplot of these aggregated data is not really that 
 useful. Boxplots are however so useful, that it is relevant to show how they 
 are made.
@@ -342,12 +343,7 @@ plot_data %>%
 ~~~
 {: .language-r}
 
-
-
-~~~
-Error in ggplot(., aes(x = CIVILSTAND, y = INDHOLD)): object 'plot_data' not found
-~~~
-{: .error}
+<img src="../fig/rmd-04-boxplot-with-jitter-1.png" title="plot of chunk boxplot-with-jitter" alt="plot of chunk boxplot-with-jitter" width="612" style="display: block; margin: auto;" />
 Jitter is a special way of plotting points. When we plot the points at their
 exact location, we risk that some of the points overlap. geom_jitter adds a small 
 bit of noise to the data, in order to spread them out. That way we can better see 
@@ -373,12 +369,7 @@ plot_data %>%
 ~~~
 {: .language-r}
 
-
-
-~~~
-Error in ggplot(., aes(x = CIVILSTAND)): object 'plot_data' not found
-~~~
-{: .error}
+<img src="../fig/rmd-04-barplot-1-1.png" title="plot of chunk barplot-1" alt="plot of chunk barplot-1" width="612" style="display: block; margin: auto;" />
 
 We have an equal number of datapoints for each value of "CIVILSTAND". Not that
 useful.
@@ -394,12 +385,7 @@ plot_data %>% ggplot(aes(CIVILSTAND, INDHOLD)) +
 ~~~
 {: .language-r}
 
-
-
-~~~
-Error in ggplot(., aes(CIVILSTAND, INDHOLD)): object 'plot_data' not found
-~~~
-{: .error}
+<img src="../fig/rmd-04-unnamed-chunk-3-1.png" title="plot of chunk unnamed-chunk-3" alt="plot of chunk unnamed-chunk-3" width="612" style="display: block; margin: auto;" />
 Now we get the values from INDHOLD plotted on the y-axis. But we get ALL the 
 values from INDHOLD plotted. And we have INDHOLD from several years, from 
 several administrative parts of Denmark.
@@ -425,7 +411,9 @@ plot_data %>%
 
 
 ~~~
-Error in filter(., str_detect(OMRÅDE, "Region"), TID == yearquarter("2008 Q1")): object 'plot_data' not found
+Error: Problem with `filter()` input `..2`.
+ℹ Input `..2` is `TID == yearquarter("2008 Q1")`.
+✖ Can't combine `..1` <character> and `..2` <yearquarter>.
 ~~~
 {: .error}
 Now we get more sensible numbers. But each bar is still the sum of the number
@@ -446,7 +434,9 @@ plot_data %>%
 
 
 ~~~
-Error in filter(., str_detect(OMRÅDE, "Region"), TID == yearquarter("2008 Q1")): object 'plot_data' not found
+Error: Problem with `filter()` input `..2`.
+ℹ Input `..2` is `TID == yearquarter("2008 Q1")`.
+✖ Can't combine `..1` <character> and `..2` <yearquarter>.
 ~~~
 {: .error}
 Oops! Color only colors the outline of the bars. We can do better.
@@ -467,7 +457,9 @@ plot_data %>%
 
 
 ~~~
-Error in filter(., str_detect(OMRÅDE, "Region"), TID == yearquarter("2008 Q1")): object 'plot_data' not found
+Error: Problem with `filter()` input `..2`.
+ℹ Input `..2` is `TID == yearquarter("2008 Q1")`.
+✖ Can't combine `..1` <character> and `..2` <yearquarter>.
 ~~~
 {: .error}
 
@@ -491,7 +483,9 @@ plot_data %>%
 
 
 ~~~
-Error in filter(., str_detect(OMRÅDE, "Region"), TID == yearquarter("2008 Q1")): object 'plot_data' not found
+Error: Problem with `filter()` input `..2`.
+ℹ Input `..2` is `TID == yearquarter("2008 Q1")`.
+✖ Can't combine `..1` <character> and `..2` <yearquarter>.
 ~~~
 {: .error}
 
@@ -533,7 +527,9 @@ plot_data %>%
 
 
 ~~~
-Error in filter(., str_detect(OMRÅDE, "Region"), TID == yearquarter("2008 Q1")): object 'plot_data' not found
+Error: Problem with `filter()` input `..2`.
+ℹ Input `..2` is `TID == yearquarter("2008 Q1")`.
+✖ Can't combine `..1` <character> and `..2` <yearquarter>.
 ~~~
 {: .error}
 
@@ -562,7 +558,9 @@ plot_data %>%
 
 
 ~~~
-Error in filter(., str_detect(OMRÅDE, "Region"), TID == yearquarter("2008 Q1")): object 'plot_data' not found
+Error: Problem with `filter()` input `..2`.
+ℹ Input `..2` is `TID == yearquarter("2008 Q1")`.
+✖ Can't combine `..1` <character> and `..2` <yearquarter>.
 ~~~
 {: .error}
 

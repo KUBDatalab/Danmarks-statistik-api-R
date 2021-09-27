@@ -51,7 +51,7 @@ library(tidyverse)
 If not still in the workspace, load the data we saved in the previous lesson.
 
 
-```{r load-data, purl=FALSE, eval=F}
+```{r load-data, purl=FALSE, eval=T}
 SD_data <- read_csv2("../data/SD_data.csv")
 ```
 
