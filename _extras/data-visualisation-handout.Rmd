@@ -1,11 +1,12 @@
 ---
 title: "Code Handout - Data Visualisation with ggplot2"
 output:
+  md_document:
+    variant: markdown_github
   html_document:
     df_print: paged
     code_download: true
-  md_document:
-    variant: markdown_github
+
 ---
 
 This document contains all of the functions that we have covered thus far in the
