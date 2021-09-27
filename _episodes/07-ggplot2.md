@@ -51,7 +51,7 @@ If not still in the workspace, load the data we saved in the previous lesson.
 
 
 ~~~
-data <- read_csv2("../data/SD_data.csv")
+SD_data <- read_csv2("../data/SD_data.csv")
 ~~~
 {: .language-r}
 
@@ -97,7 +97,7 @@ Remember from the last lesson that the pipe operator `%>%` places the result of 
 
 
 ~~~
-data %>%
+SD_data %>%
     ggplot()
 ~~~
 {: .language-r}
@@ -106,7 +106,7 @@ data %>%
 
 
 ~~~
-data %>%
+SD_data %>%
     ggplot(aes(x = TID, y = INDHOLD))
 ~~~
 {: .language-r}
@@ -123,7 +123,7 @@ To add a geom to the plot use the `+` operator. Because we have two continuous v
 
 
 ~~~
-data %>%
+SD_data %>%
     ggplot(aes(x = TID, y = INDHOLD)) +
     geom_point()
 ~~~
@@ -132,8 +132,7 @@ data %>%
 
 
 ~~~
-Error:   You're passing a function as global data.
-  Have you misspelled the `data` argument in `ggplot()`
+Error in ggplot(., aes(x = TID, y = INDHOLD)): object 'SD_data' not found
 ~~~
 {: .error}
 What we might note that the fact that we have ALL the municipalites leads to a
@@ -145,7 +144,7 @@ Let us pull out all the regions.
 
 
 ~~~
-plot_data <- data %>% 
+plot_data <- SD_data %>% 
   filter(str_detect(OMRÅDE, "Region"))
 ~~~
 {: .language-r}
@@ -153,7 +152,7 @@ plot_data <- data %>%
 
 
 ~~~
-Error in UseMethod("filter"): no applicable method for 'filter' applied to an object of class "function"
+Error in filter(., str_detect(OMRÅDE, "Region")): object 'SD_data' not found
 ~~~
 {: .error}
 
@@ -568,55 +567,5 @@ Error in filter(., str_detect(OMRÅDE, "Region"), TID == yearquarter("2008 Q1"))
 {: .error}
 
 
-## **`ggplot2`** themes
-
-In addition to `theme_bw()`, which changes the plot background to white,
-**`ggplot2`** comes with several other themes which can be useful to quickly
-change the look of your visualization. The complete list of themes is available
-at <https://ggplot2.tidyverse.org/reference/ggtheme.html>. `theme_minimal()` and
-`theme_light()` are popular, and `theme_void()` can be useful as a starting
-point to create a new hand-crafted theme.
-
-The
-[ggthemes](https://jrnold.github.io/ggthemes/reference/index.html)
-package provides a wide variety of options (including an Excel 2003 theme). The
-[**`ggplot2`** extensions website](https://exts.ggplot2.tidyverse.org/) provides a list
-of packages that extend the capabilities of **`ggplot2`**, including additional
-themes.
-
-
-
-After creating your plot, you can save it to a file in your favourite format. 
-The Export tab in the **Plot** pane in RStudio will save your plots at low 
-resolution, which will not be accepted by many journals and will not scale 
-well for posters.
-
-Instead, use the `ggsave()` function, which allows you to easily change the 
-dimension and resolution of your plot by adjusting the appropriate arguments 
-(`width`, `height` and `dpi`).
-
-Make sure you have the `fig_output/` folder in your working directory.
-
-
-~~~
-my_plot <- percent_items %>%
-    ggplot(aes(x = village, y = percent)) +
-    geom_bar(stat = "identity", position = "dodge") +
-    facet_wrap(~ items) +
-    labs(title = "Percent of respondents in each village \n who owned each item",
-         x = "Village",
-         y = "Percent of Respondents") +
-    theme_bw() +
-    theme(axis.text.x = element_text(color = "grey20", size = 12, angle = 45,
-                                     hjust = 0.5, vjust = 0.5),
-          axis.text.y = element_text(color = "grey20", size = 12),
-          text = element_text(size = 16),
-          plot.title = element_text(hjust = 0.5))
-
-ggsave("fig_output/name_of_file.png", my_plot, width = 15, height = 10)
-~~~
-{: .language-r}
-
-Note: The parameters `width` and `height` also determine the font size in the saved plot.
 
 {% include links.md %}
