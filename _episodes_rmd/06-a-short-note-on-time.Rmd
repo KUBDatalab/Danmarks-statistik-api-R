@@ -18,6 +18,7 @@ source: Rmd
 source("../bin/chunk-options.R")
 knitr_fig_path("03-")
 source("../bin/download_data.R")
+library(tidyverse )
 ```
 
 
