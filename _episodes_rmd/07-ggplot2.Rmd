@@ -27,6 +27,7 @@ source: Rmd
 source("../bin/chunk-options.R")
 knitr_fig_path("04-")
 source("../bin/download_data.R")
+library(tidyverse)
 ```
 
 Nice data. How does it look?
@@ -50,7 +51,7 @@ If not still in the workspace, load the data we saved in the previous lesson.
 
 
 ```{r load-data, purl=FALSE, eval=F}
-data <- read_csv2("data")
+data <- read_csv2("../data/SD_data.csv")
 ```
 
 

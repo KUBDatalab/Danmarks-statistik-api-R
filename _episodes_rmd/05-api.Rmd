@@ -336,3 +336,9 @@ head(data)
 This procedure will work for all the tables from Statistics Denmark!
 
 The data is nicely formatted and ready to use. Almost.
+
+Before we do anything else, let us save the data.
+```{r}
+write_csv2(data, "../data/SD_data.csv")
+```
+
