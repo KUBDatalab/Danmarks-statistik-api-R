@@ -1,6 +1,8 @@
 ---
 title: "Code Handout - Data Wrangling with dplyr & tidyr"
 output:
+  md_document:
+    variant: markdown_github
   html_document:
     df_print: paged
     code_download: true
