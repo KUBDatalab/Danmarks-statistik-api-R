@@ -46,9 +46,35 @@ data <- read_csv2("../data/SD_data.csv")
 
 
 ~~~
-Error in read_csv2("../data/SD_data.csv"): could not find function "read_csv2"
+ℹ Using "','" as decimal and "'.'" as grouping mark. Use `read_delim()` for more control.
 ~~~
-{: .error}
+{: .output}
+
+
+
+~~~
+Rows: 23100 Columns: 4
+~~~
+{: .output}
+
+
+
+~~~
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ";"
+chr (3): OMRÅDE, CIVILSTAND, TID
+dbl (1): INDHOLD
+~~~
+{: .output}
+
+
+
+~~~
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+~~~
+{: .output}
 
 
 
@@ -60,13 +86,15 @@ head(data)
 
 
 ~~~
-                                                                            
-1 function (..., list = character(), package = NULL, lib.loc = NULL,        
-2     verbose = getOption("verbose"), envir = .GlobalEnv, overwrite = TRUE) 
-3 {                                                                         
-4     fileExt <- function(x) {                                              
-5         db <- grepl("\\\\.[^.]+\\\\.(gz|bz2|xz)$", x)                     
-6         ans <- sub(".*\\\\.", "", x)                                      
+# A tibble: 6 × 4
+  OMRÅDE      CIVILSTAND    TID    INDHOLD
+  <chr>       <chr>         <chr>    <dbl>
+1 All Denmark Never married 2008Q1 2552700
+2 All Denmark Never married 2008Q2 2563134
+3 All Denmark Never married 2008Q3 2564705
+4 All Denmark Never married 2008Q4 2568255
+5 All Denmark Never married 2009Q1 2575185
+6 All Denmark Never married 2009Q2 2584993
 ~~~
 {: .output}
 
@@ -307,13 +335,6 @@ data <- data %>%
   mutate(TID = yearquarter(TID))
 ~~~
 {: .language-r}
-
-
-
-~~~
-Error in mutate(., TID = yearquarter(TID)): could not find function "mutate"
-~~~
-{: .error}
 
 We mutate the column "TID" into the result of running yearquarter() on the
 column "TID". And now we have a data frame that we can do interesting things 
