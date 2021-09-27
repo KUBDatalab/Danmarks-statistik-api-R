@@ -51,7 +51,7 @@ If not still in the workspace, load the data we saved in the previous lesson.
 
 
 ~~~
-data <- read_csv2("data")
+data <- read_csv2("../data/SD_data.csv")
 ~~~
 {: .language-r}
 

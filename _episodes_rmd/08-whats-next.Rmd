@@ -3,22 +3,14 @@ title: "Whats next?"
 teaching: 30
 exercises: 15
 questions:
-- "What is JSON format?"
-- "How can I convert JSON to an R dataframe?"
-- "How can I convert an array of JSON record into a table?"
+- "What is the next step?"
 objectives:
-- "Describe the JSON data format"
-- "Understand where JSON is typically used"
-- "Appreciate some advantages of using JSON over tabular data"
-- "Appreciate some disadvantages of processing JSON documents"
-- "Use the jsonLite package to read a JSON file"
-- "Display formatted JSON as dataframe"
-- "Select and display nested dataframe fields from a JSON document"
-- "Write tabular data from selected elements from a JSON document to a csv file"
+- "Get an idea about what to do to learn more"
+
 keypoints:
-- "JSON is a popular data format for transferring data used by a great many Web based APIs"
-- "The complex structure of a JSON document means that it cannot easily be 'flattened' into tabular data"
-- "We can use R code to extract values of interest and place them in a csv file"
+- "Practice makes perfect"
+- "KUB Datalab offers lots of courses and consultations"
+- "The web is overflowing with tutorials and courses"
 source: Rmd
 ---
 

@@ -35,6 +35,22 @@ https://www.youtube.com/watch?v=-5wpm-gesOY
 We just pulled data out giving us the danish population, broken down by
 marriage status and geographical area. And time.
 
+If the data is not still in memory, we can read it in:
+
+
+~~~
+data <- read_csv2("../data/SD_data.csv")
+~~~
+{: .language-r}
+
+
+
+~~~
+Error in read_csv2("../data/SD_data.csv"): could not find function "read_csv2"
+~~~
+{: .error}
+
+
 
 ~~~
 head(data)
@@ -303,10 +319,10 @@ We mutate the column "TID" into the result of running yearquarter() on the
 column "TID". And now we have a data frame that we can do interesting things 
 with.
 
-Now might be a good time to save the data.
+Now might be a good time to save the data in its new version:
 
 ~~~
-write_csv2(data, "data.csv")
+write_csv2(data, "../data/SD_data.csv")
 ~~~
 {: .language-r}
 

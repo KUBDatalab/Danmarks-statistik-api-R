@@ -134,20 +134,17 @@ subjects
 
 
 ~~~
-   id                               description active hasSubjects subjects
-1  02                  Population and elections   TRUE        TRUE     NULL
-2  04                 Labour, income and wealth   TRUE        TRUE     NULL
-3  06                    Prices and consumption   TRUE        TRUE     NULL
-4  05                         Living conditions   TRUE        TRUE     NULL
-5  14 National accounts and government finances   TRUE        TRUE     NULL
-6  03                   Education and knowledge   TRUE        TRUE     NULL
-7  11                          Business sectors   TRUE        TRUE     NULL
-8  07                Business sector in general   TRUE        TRUE     NULL
-9  16                   Money and credit market   TRUE        TRUE     NULL
-10 13                          External economy   TRUE        TRUE     NULL
-11 18               Culture and National Church   TRUE        TRUE     NULL
-12 01         Geography, environment and energy   TRUE        TRUE     NULL
-13 19                                     Other   TRUE        TRUE     NULL
+   id            description active hasSubjects subjects
+1   1                 People   TRUE        TRUE     NULL
+2   2      Labour and income   TRUE        TRUE     NULL
+3   3                Economy   TRUE        TRUE     NULL
+4   4      Social conditions   TRUE        TRUE     NULL
+5   5 Education and research   TRUE        TRUE     NULL
+6   6               Business   TRUE        TRUE     NULL
+7   7              Transport   TRUE        TRUE     NULL
+8   8    Culture and leisure   TRUE        TRUE     NULL
+9   9 Environment and energy   TRUE        TRUE     NULL
+10 19                  Other   TRUE        TRUE     NULL
 ~~~
 {: .output}
 
@@ -159,6 +156,19 @@ about populations and elections:
 
 ~~~
 sub_subjects <- get_subjects(subjects = "02")
+~~~
+{: .language-r}
+
+
+
+~~~
+Error: API did not return text/json
+~~~
+{: .error}
+
+
+
+~~~
 sub_subjects
 ~~~
 {: .language-r}
@@ -166,12 +176,9 @@ sub_subjects
 
 
 ~~~
-  id              description active hasSubjects
-1 02 Population and elections   TRUE        TRUE
-                                                                                                                                                                                                                                                                                                                                                                subjects
-1 2401, 2402, 2405, 2406, 2407, 2408, 2410, 2409, 2411, Population and population projections, Immigrants and their descendants, Births, Deaths and life expectancy, Households, families and children, Marriages and divorces, Migrations, Names, Elections, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE
+Error in eval(expr, envir, enclos): object 'sub_subjects' not found
 ~~~
-{: .output}
+{: .error}
 
 
 
@@ -186,6 +193,19 @@ this time specifying which subject we are interested in:
 
 ~~~
 subject <- get_subjects("02")
+~~~
+{: .language-r}
+
+
+
+~~~
+Error: API did not return text/json
+~~~
+{: .error}
+
+
+
+~~~
 subject
 ~~~
 {: .language-r}
@@ -193,12 +213,9 @@ subject
 
 
 ~~~
-  id              description active hasSubjects
-1 02 Population and elections   TRUE        TRUE
-                                                                                                                                                                                                                                                                                                                                                                subjects
-1 2401, 2402, 2405, 2406, 2407, 2408, 2410, 2409, 2411, Population and population projections, Immigrants and their descendants, Births, Deaths and life expectancy, Households, families and children, Marriages and divorces, Migrations, Names, Elections, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE
+Error in eval(expr, envir, enclos): object 'subject' not found
 ~~~
-{: .output}
+{: .error}
 
 
 The result is a bit complicated. The column "subjects" in the resulting dataframe
@@ -214,19 +231,9 @@ subject$subjects
 
 
 ~~~
-[[1]]
-    id                           description active hasSubjects subjects
-1 2401 Population and population projections   TRUE        TRUE     NULL
-2 2402      Immigrants and their descendants   TRUE        TRUE     NULL
-3 2405                                Births   TRUE        TRUE     NULL
-4 2406            Deaths and life expectancy   TRUE        TRUE     NULL
-5 2407     Households, families and children   TRUE        TRUE     NULL
-6 2408                Marriages and divorces   TRUE        TRUE     NULL
-7 2410                            Migrations   TRUE        TRUE     NULL
-8 2409                                 Names   TRUE        TRUE     NULL
-9 2411                             Elections   TRUE        TRUE     NULL
+Error in eval(expr, envir, enclos): object 'subject' not found
 ~~~
-{: .output}
+{: .error}
 
 Those sub-subjects have their own subjects! Lets get to the bottom of this, and
 use 2401, Population and population projections as an example:
@@ -234,6 +241,19 @@ use 2401, Population and population projections as an example:
 
 ~~~
 sub_sub_subjects <- get_subjects("2401")
+~~~
+{: .language-r}
+
+
+
+~~~
+Error: API did not return text/json
+~~~
+{: .error}
+
+
+
+~~~
 sub_sub_subjects$subjects
 ~~~
 {: .language-r}
@@ -241,12 +261,9 @@ sub_sub_subjects$subjects
 
 
 ~~~
-[[1]]
-     id            description active hasSubjects subjects
-1 10021  Population in Denmark   TRUE       FALSE     NULL
-2 10022 Population projections   TRUE       FALSE     NULL
+Error in eval(expr, envir, enclos): object 'sub_sub_subjects' not found
 ~~~
-{: .output}
+{: .error}
 Now we are at the bottom. We can see in the column "hasSubjects" that there 
 are no sub_sub_sub_subjects. 
 
@@ -274,6 +291,13 @@ lots_of_subjects <- get_subjects("02", recursive = T, include_tables = T)
 ~~~
 {: .language-r}
 
+
+
+~~~
+Error: API did not return text/json
+~~~
+{: .error}
+
 The "recursive = T" parameter means that get_subjects will retrieve 
 the subjects of the subjects, and then the subjects of those subjects.
 
@@ -292,6 +316,19 @@ tables available for a given subject.
 
 ~~~
 tables <- get_tables(subjects="10021")
+~~~
+{: .language-r}
+
+
+
+~~~
+Error: API did not return text/json
+~~~
+{: .error}
+
+
+
+~~~
 tables
 ~~~
 {: .language-r}
@@ -299,107 +336,9 @@ tables
 
 
 ~~~
-         id                                                          text
-1    FOLK1A                    Population at the first day of the quarter
-2    FOLK1B                    Population at the first day of the quarter
-3    FOLK1C                    Population at the first day of the quarter
-4    FOLK1D                    Population at the first day of the quarter
-5    FOLK1E                    Population at the first day of the quarter
-6     FOLK2                                         Population 1. January
-7   INDOPH1                                         Immigrants 1. January
-8   INDOPH2                                         Immigrants 1. January
-9    KRYDS1                                         Population 1. January
-10   KRYDS2                            People of Danish origin 1. January
-11   KRYDS3                                         Population 1. January
-12   KRYDS4                                         Population 1. January
-13    FOLK3                                         Population 1. January
-14       FT                          Population figures from the censuses
-15    BEF5F People born in Faroe Islands and living in Denmark 1. January
-16    BEF5G     People born in Greenland and living in Denmark 1. January
-17     BEF5                                         Population 1. January
-18      BY3                                         Population 1. January
-19      BY1                                         Population 1. January
-20      BY4                                         Households 1. January
-21      BY2                                         Population 1. January
-22     BEF4                                         Population 1. January
-23    HISB3                                      Summary vital statistics
-24    BEV22                   Summary vital statistics (provisional data)
-25   BEV107                                      Summary vital statistics
-26   GALDER                                                   Average age
-27 KMGALDER                                                   Average age
-28      KM1                    Population at the first day of the quarter
-29      KM5                                         Population 1. January
-30    SOGN1                                         Population 1. January
-31   SOGN10                                         Population 1. January
-32 KMSTA003                                      Summary vital statistics
-      unit             updated firstPeriod latestPeriod active
-1   Number 2021-08-11T08:00:00      2008Q1       2021Q3   TRUE
-2   Number 2021-08-11T08:00:00      2008Q1       2021Q3   TRUE
-3   Number 2021-08-11T08:00:00      2008Q1       2021Q3   TRUE
-4   Number 2021-08-11T08:00:00      2008Q1       2021Q3   TRUE
-5   Number 2021-08-11T08:00:00      2008Q1       2021Q3   TRUE
-6   Number 2021-02-11T08:00:00        1980         2021   TRUE
-7   Number 2021-06-01T08:00:00        2008         2021   TRUE
-8   Number 2021-06-01T08:00:00        2008         2021   TRUE
-9   Number 2021-02-11T08:00:00        2019         2021   TRUE
-10  Number 2021-02-11T08:00:00        2019         2021   TRUE
-11  Number 2021-02-11T08:00:00        2019         2021   TRUE
-12  Number 2021-02-11T08:00:00        2019         2021   TRUE
-13  Number 2021-02-11T08:00:00        2008         2021   TRUE
-14  Number 2021-02-11T08:00:00        1769         2021   TRUE
-15  Number 2021-02-11T08:00:00        2008         2021   TRUE
-16  Number 2021-02-11T08:00:00        2008         2021   TRUE
-17  Number 2021-02-11T08:00:00        1990         2021   TRUE
-18       - 2021-04-29T08:00:00        2017         2021   TRUE
-19  Number 2021-04-29T08:00:00        2010         2021   TRUE
-20  Number 2021-05-19T08:00:00        2010         2021   TRUE
-21  Number 2021-04-29T08:00:00        2010         2021   TRUE
-22  Number 2021-03-31T08:00:00        1901         2021   TRUE
-23  Number 2021-02-12T08:00:00        1901         2021   TRUE
-24  Number 2021-08-11T08:00:00      2007Q2       2021Q2   TRUE
-25  Number 2021-02-11T08:00:00        2006         2020   TRUE
-26 Average 2021-02-11T08:00:00        2005         2021   TRUE
-27 Average 2021-02-11T08:00:00        2007         2021   TRUE
-28  Number 2021-08-11T08:00:00      2007Q1       2021Q3   TRUE
-29  Number 2021-02-11T08:00:00        2007         2021   TRUE
-30  Number 2021-02-11T08:00:00        2010         2021   TRUE
-31  Number 2020-09-16T08:00:00        1925         2020   TRUE
-32  Number 2021-02-11T08:00:00        2015         2020   TRUE
-                                                                                                                                                                                                                                               variables
-1                                                                                                                                                                                                                 region, sex, age, marital status, time
-2                                                                                                                                                                                                                    region, sex, age, citizenship, time
-3                                                                                                                                                                                                    region, sex, age, ancestry, country of origin, time
-4                                                                                                                                                                                                                    region, sex, age, citizenship, time
-5                                                                                                                                                                                                                       region, sex, age, ancestry, time
-6                                                                                                                                                                                               age, sex, ancestry, citizenship, country of origin, time
-7                                                                                                                                                                                                                first permit of residence, region, time
-8                                                                                                                                                                                          first permit of residence, group of countries of origin, time
-9  The origin of the main character, The country of birth of the main character, The citizenship of the main character, The country of birth of the mother, mothers citizenship, The country of birth of the father, the citizenship of the father, time
-10                                                                                                                          The country of birth of the main character, country of birth and citizenship of the parents, age of the main character, time
-11                                                                                            The origin of the main character, The country of birth of the main character, The country of birth of the mother, The country of birth of the father, time
-12                                                                                                                                    The origin of the main character, country of birth and citizenship of the parents, age of the main character, time
-13                                                                                                                                                                                                        day of birth, birth month, year of birth, time
-14                                                                                                                                                                                                                                   national part, time
-15                                                                                                                                                                                                                sex, age, parents place of birth, time
-16                                                                                                                                                                                                                sex, age, parents place of birth, time
-17                                                                                                                                                                                                                      sex, age, country of birth, time
-18                                                                                                                                                                                  urban and rural areas, population, area and population density, time
-19                                                                                                                                                                                                                 urban and rural areas, age, sex, time
-20                                                                                                                                                                                    urban and rural areas, type of household, number of children, time
-21                                                                                                                                                                                                               municipality, city size, age, sex, time
-22                                                                                                                                                                                                                                         islands, time
-23                                                                                                                                                                                                                                type of movement, time
-24                                                                                                                                                                                                                   region, type of movement, sex, time
-25                                                                                                                                                                                                                   region, type of movement, sex, time
-26                                                                                                                                                                                                                               municipality, sex, time
-27                                                                                                                                                                                                                                     parish, sex, time
-28                                                                                                                                                                                                           parish, member of the National Church, time
-29                                                                                                                                                                                                 parish, sex, age, member of the National Church, time
-30                                                                                                                                                                                                                                parish, sex, age, time
-31                                                                                                                                                                                                                                          parish, time
-32                                                                                                                                                                                                                               parish, movements, time
+Error in eval(expr, envir, enclos): object 'tables' not found
 ~~~
-{: .output}
+{: .error}
 
 We get at lot of information here. The id identifies the table, text gives a 
 description of the table that humans can understand. When the table was last
@@ -705,3 +644,18 @@ head(data)
 This procedure will work for all the tables from Statistics Denmark!
 
 The data is nicely formatted and ready to use. Almost.
+
+Before we do anything else, let us save the data.
+
+~~~
+write_csv2(data, "../data/SD_data.csv")
+~~~
+{: .language-r}
+
+
+
+~~~
+Error in write_csv2(data, "../data/SD_data.csv"): could not find function "write_csv2"
+~~~
+{: .error}
+
