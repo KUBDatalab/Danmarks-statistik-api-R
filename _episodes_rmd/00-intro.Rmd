@@ -3,7 +3,7 @@ title: "Before we Start"
 teaching: 10
 exercises: 5
 questions:
-- "How to find your way around RStudio?"
+- "What have I forgotten about R and RStudio?"
 - "How to interact with R?"
 - "How to manage your environment?"
 - "How to install packages?"
@@ -390,5 +390,10 @@ install.packages("tidyverse")
 was written to the console before the start of the installation messages.
 
 You could also have installed the **`tidyverse`** packages by running this command directly at the R terminal.
+
+We are going to use the library **`danstat`**. Please install by running this command:
+```{r, eval = FALSE}
+install.packages("danstat")
+```
 
 {% include links.md %}
