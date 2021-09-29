@@ -55,6 +55,13 @@ If not still in the workspace, load the data we saved in the previous lesson.
 SD_data <- read_csv2("../data/SD_data.csv")
 ```
 
+We read in data from a csv-file. That is stored as text, so we need to convert
+the "TID" column to something that can be understood as time by R:
+
+```{r}
+SD_data <- SD_data %>% mutate(TID = yearquarter(TID)
+```
+
 
 ## Plotting with **`ggplot2`**
 
@@ -324,6 +331,7 @@ the first quarter of 2008. Note that we have to convert "2008 Q1" to the
 same datatype as is contained in the columns, using the yearquarter() function.
 
 ```{r}
+
 plot_data %>% 
   filter(str_detect(OMRÅDE, "Region"),
          TID == yearquarter("2008 Q1")) %>% 
