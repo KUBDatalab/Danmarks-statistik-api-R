@@ -121,9 +121,6 @@ round(3.14159, digits = 2)
 
 ## Vectors and data types
 
-```{r, echo=FALSE, purl=TRUE}
-### Vectors and data types
-```
 
 A vector is the most common and basic data type in R, and is pretty much
 the workhorse of R. A vector is composed by a series of values, which can be
@@ -178,7 +175,6 @@ str(respondent_wall_type)
 You can use the `c()` function to add other elements to your vector:
 ```{r, purl=FALSE}
 possessions <- c("bicycle", "radio", "television")
-possessions <- c(possessions, "mobile_phone") # add to the end of the vector
 possessions <- c("car", possessions) # add to the beginning of the vector
 possessions
 ```
@@ -192,85 +188,11 @@ We can do this over and over again to grow a vector, or assemble a dataset.
 As we program, this may be useful to add results that we are collecting or
 calculating.
 
-An **atomic vector** is the simplest R **data type** and is a linear vector of a single type. Above, we saw
-2 of the 6 main **atomic vector** types  that R
-uses: `"character"` and `"numeric"` (or `"double"`). These are the basic building blocks that
-all R objects are built from. The other 4 **atomic vector** types are:
-
-* `"logical"` for `TRUE` and `FALSE` (the boolean data type)
-* `"integer"` for integer numbers (e.g., `2L`, the `L` indicates to R that it's an integer)
-* `"complex"` to represent complex numbers with real and imaginary parts (e.g.,
-`1 + 4i`) and that's all we're going to say about them
-* `"raw"` for bitstreams that we won't discuss further
-
-You can check the type of your vector using the `typeof()` function and inputting your vector as the argument.
 
 Vectors are one of the many **data structures** that R uses. Other important
 ones are lists (`list`), matrices (`matrix`), data frames (`data.frame`),
 factors (`factor`) and arrays (`array`).
 
-> ## Exercise
->
->
-> We’ve seen that atomic vectors can be of type character, numeric (or double),
->   integer, and logical. But what happens if we try to mix these types in a
->   single vector?
->
-> > ## Solution
-> >
-> > R implicitly converts them to all be the same type.
-> {: .solution}
->
-> What will happen in each of these examples? (hint: use `class()`
-> to check the data type of your objects):
->
->  ```{r, results="hide"}
->  num_char <- c(1, 2, 3, "a")
->  num_logical <- c(1, 2, 3, TRUE)
->  char_logical <- c("a", "b", "c", TRUE)
->  tricky <- c(1, 2, 3, "4")
->  ```
->
->
-> Why do you think it happens?
->
-> > ## Solution
-> >
-> >  Vectors can be of only one data type. R tries to
-> > convert (coerce) the content of this vector to find a "common
-> > denominator" that doesn't lose any information.
-> {: .solution}
->
->
-> How many values in `combined_logical` are `"TRUE"` (as a character) in the
-> following example:
->
-> ```{r, results="hide"}
-> num_logical <- c(1, 2, 3, TRUE)
-> char_logical <- c("a", "b", "c", TRUE)
-> combined_logical <- c(num_logical, char_logical)
->  ```
-> &nbsp;
->
-> > ## Solution
-> >
-> > Only one. There is no memory of past data types, and the coercion
-> > happens the
-> > first time the vector is evaluated. Therefore, the `TRUE` in
-> > `num_logical`
-> > gets converted into a `1` before it gets converted into `"1"` in
-> > `combined_logical`.
-> {: .solution}
->
-> You've probably noticed that objects of different types get
->   converted into a single, shared type within a vector. In R, we
->   call converting objects from one class into another class
->   _coercion_. These conversions happen according to a hierarchy,
->   whereby some types get preferentially coerced into other
->   types. Can you draw a diagram that represents the hierarchy of how
->   these data types are coerced?
->
-{: .challenge}
 
 
 ## Subsetting vectors
@@ -383,52 +305,7 @@ functions `is.na()`, `na.omit()`, and `complete.cases()`. See below for
 examples.
 
 
-```{r, purl=FALSE}
-## Extract those elements which are not missing values.
-## The ! character is also called the NOT operator
-rooms[!is.na(rooms)]
 
-## Count the number of missing values.
-## The output of is.na() is a logical vector (TRUE/FALSE equivalent to 1/0) so the sum() function here is effectively counting
-sum(is.na(rooms))
-
-## Returns the object with incomplete cases removed. The returned object is an atomic vector of type `"numeric"` (or `"double"`).
-na.omit(rooms)
-
-## Extract those elements which are complete cases. The returned object is an atomic vector of type `"numeric"` (or `"double"`).
-rooms[complete.cases(rooms)]
-```
 Recall that you can use the `typeof()` function to find the type of your atomic vector.
-
-> ## Exercise
->
-> 1. Using this vector of rooms, create a new vector with the NAs removed.
->
->     ```r
->     rooms <- c(1, 2, 1, 1, NA, 3, 1, 3, 2, 1, 1, 8, 3, 1, NA, 1)
->     ```
-> 2. Use the function `median()` to calculate the median of the `rooms` vector.
->
-> 3. Use R to figure out how many households in the set use more than 2 rooms for sleeping.
->
-> > ## Solution
-> > ```{r, answer=TRUE}
-> > rooms <- c(1, 2, 1, 1, NA, 3, 1, 3, 2, 1, 1, 8, 3, 1, NA, 1)
-> > rooms_no_na <- rooms[!is.na(rooms)]
-> > # or
-> > rooms_no_na <- na.omit(rooms)
-> > # 2.
-> > median(rooms, na.rm = TRUE)
-> > # 3.
-> > rooms_above_2 <- rooms_no_na[rooms_no_na > 2]
-> > length(rooms_above_2)
-> > ```
-> {: .solution}
-{: .challenge}
-
-Now that we have learned how to write scripts, and the basics of R's data
-structures, we are ready to start working with the SAFI dataset we have been
-using in the other lessons, and learn about data frames.
-
 
 {% include links.md %}

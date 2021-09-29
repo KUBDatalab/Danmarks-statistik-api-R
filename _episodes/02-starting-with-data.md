@@ -5,6 +5,7 @@ title: "Starting with Data"
 teaching: 50
 exercises: 30
 questions:
+- "What else have we forgotten about R?"
 - "What is a data.frame?"
 - "How can I read a complete csv file into R?"
 - "How can I get basic summary information about my dataset?"
@@ -35,13 +36,6 @@ source: Rmd
 Data frames are the _de facto_ data structure for tabular data in `R`, and what
 we use for data processing, statistics, and plotting.
 
-A data frame is the representation of data in the format of a table where the
-columns are vectors that all have the same length. Data frames are analogous to
-the more familiar spreadsheet in programs such as Excel, with one key difference.
-Because columns are vectors,
-each column must contain a single type of data (e.g., characters, integers,
-factors). For example, here is a figure depicting a data frame comprising a
-numeric, a character, and a logical vector.
 
 ![A 3 by 3 data frame with columns showing numeric, character and logical values.](../fig/data-frame.svg)
 
@@ -62,43 +56,17 @@ more about the **`tidyverse`** collection of packages
 When you load  the **`tidyverse`** (`library(tidyverse)`), the core packages
 (the packages used in most data analyses) get loaded, including **`readr`**.
 
-Even with the use of an RStudio project, it can be difficult to learn how to
-specify paths to file locations. Enter the **here** package! The here package
-creates paths relative to the top-level directory (your RStudio project). These
-relative paths work *regardless* of where the associated source file lives
-inside your project, like analysis projects with data and reports in different
-subdirectories.  This is an important contrast to using `setwd()`, which 
-depends on the way you order your files on your computer. 
-
-
-
-Before we can use the `read_csv()` and `here()` functions, we need to load the 
-tidyverse and here packages.
-
-Also, if you recall, the missing data is encoded as "NULL" in the dataset.
-We'll tell it to the function, so R will automatically convert all the "NULL"
-entries in the dataset into `NA`.
 
 
 ~~~
 library(tidyverse)
-library(here)
 
-interviews <- read_csv(
-  here("data", "SAFI_clean.csv"), 
-  na = "NULL")
+interviews <- read_csv("../data/SAFI_clean.csv", na = "NULL")
 ~~~
 {: .language-r}
 
-In the above code, we notice the `here()` function takes folder and file names
-as inputs (e.g., `"data"`, `"SAFI_clean.csv"`), each enclosed in quotations 
-(`""`) and separated by a comma. The `here()` will accept as many names as are
-necessary to navigate to a particular file 
-(e.g., `here("analysis", "data", "surveys", "clean", "SAFI_clean.csv)`). 
 
-
-
-The second statement in the code above creates a data frame but doesn't output
+The statement in the code above creates a data frame but doesn't output
 any data because, as you might recall, assignments (`<-`) don't display
 anything. (Note, however, that `read_csv` may show informational
 text about the data frame that is created.) If we want to check that our data
@@ -174,13 +142,6 @@ column of floating point numbers (abbreviated `<dbl>` for the word 'double'),
 column in the "date and time" format (`<dttm>`).
 
 ## Inspecting data frames
-
-When calling a `tbl_df` object (like `interviews` here), there is already a lot
-of information about our data frame being displayed such as the number of rows,
-the number of columns, the names of the columns, and as we just saw the class of
-data stored in each column. However, there are functions to extract this
-information from data frames.  Here is a non-exhaustive list of some of these
-functions. Let's try them out!
 
 Size:  
 
