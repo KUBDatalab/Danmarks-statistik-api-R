@@ -152,7 +152,7 @@ can also be generated with code like this, similar to the "intermediate steps"
 approach in the previous lesson. We are now plotting the plot_data dataframe
 instead:
 
-```{r first-ggplot-with-plus, eval=FALSE, purl=FALSE}
+```{r first-ggplot-with-plus, eval=T, purl=FALSE}
 # Assign plot to a variable
 data_plot <- plot_data %>%
     ggplot(aes(x = TID, y = INDHOLD))

@@ -206,6 +206,8 @@ data_plot +
     geom_point()
 ~~~
 {: .language-r}
+
+<img src="../fig/rmd-04-first-ggplot-with-plus-1.png" title="plot of chunk first-ggplot-with-plus" alt="plot of chunk first-ggplot-with-plus" width="612" style="display: block; margin: auto;" />
 A lot better.
 
 > ## Notes
