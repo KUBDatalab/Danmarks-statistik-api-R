@@ -93,18 +93,9 @@ the "TID" column to something that can be understood as time by R:
 
 
 ~~~
-SD_data <- SD_data %>% mutate(TID = yearquarter(TID)
+SD_data <- SD_data %>% mutate(TID = yearquarter(TID))
 ~~~
 {: .language-r}
-
-
-
-~~~
-Error: <text>:2:0: unexpected end of input
-1: SD_data <- SD_data %>% mutate(TID = yearquarter(TID)
-   ^
-~~~
-{: .error}
 
 
 ## Plotting with **`ggplot2`**
@@ -428,14 +419,7 @@ plot_data %>%
 ~~~
 {: .language-r}
 
-
-
-~~~
-Error: Problem with `filter()` input `..2`.
-ℹ Input `..2` is `TID == yearquarter("2008 Q1")`.
-✖ Can't combine `..1` <character> and `..2` <yearquarter>.
-~~~
-{: .error}
+<img src="../fig/rmd-04-unnamed-chunk-5-1.png" title="plot of chunk unnamed-chunk-5" alt="plot of chunk unnamed-chunk-5" width="612" style="display: block; margin: auto;" />
 Now we get more sensible numbers. But each bar is still the sum of the number
 of divorced persons in ALL the regions. 
 
@@ -451,14 +435,7 @@ plot_data %>%
 ~~~
 {: .language-r}
 
-
-
-~~~
-Error: Problem with `filter()` input `..2`.
-ℹ Input `..2` is `TID == yearquarter("2008 Q1")`.
-✖ Can't combine `..1` <character> and `..2` <yearquarter>.
-~~~
-{: .error}
+<img src="../fig/rmd-04-unnamed-chunk-6-1.png" title="plot of chunk unnamed-chunk-6" alt="plot of chunk unnamed-chunk-6" width="612" style="display: block; margin: auto;" />
 Oops! Color only colors the outline of the bars. We can do better.
 
 We can use the `fill` aesthetic for the `geom_bar()` geom to colour bars by
@@ -474,14 +451,7 @@ plot_data %>%
 ~~~
 {: .language-r}
 
-
-
-~~~
-Error: Problem with `filter()` input `..2`.
-ℹ Input `..2` is `TID == yearquarter("2008 Q1")`.
-✖ Can't combine `..1` <character> and `..2` <yearquarter>.
-~~~
-{: .error}
+<img src="../fig/rmd-04-unnamed-chunk-7-1.png" title="plot of chunk unnamed-chunk-7" alt="plot of chunk unnamed-chunk-7" width="612" style="display: block; margin: auto;" />
 
 
 This creates a stacked bar chart. These are generally more difficult to read
@@ -500,14 +470,7 @@ plot_data %>%
 ~~~
 {: .language-r}
 
-
-
-~~~
-Error: Problem with `filter()` input `..2`.
-ℹ Input `..2` is `TID == yearquarter("2008 Q1")`.
-✖ Can't combine `..1` <character> and `..2` <yearquarter>.
-~~~
-{: .error}
+<img src="../fig/rmd-04-unnamed-chunk-8-1.png" title="plot of chunk unnamed-chunk-8" alt="plot of chunk unnamed-chunk-8" width="612" style="display: block; margin: auto;" />
 
 
 
@@ -544,14 +507,7 @@ plot_data %>%
 ~~~
 {: .language-r}
 
-
-
-~~~
-Error: Problem with `filter()` input `..2`.
-ℹ Input `..2` is `TID == yearquarter("2008 Q1")`.
-✖ Can't combine `..1` <character> and `..2` <yearquarter>.
-~~~
-{: .error}
+<img src="../fig/rmd-04-unnamed-chunk-9-1.png" title="plot of chunk unnamed-chunk-9" alt="plot of chunk unnamed-chunk-9" width="612" style="display: block; margin: auto;" />
 
 
 Usually plots with white background look more readable when printed.  We can set
@@ -575,14 +531,7 @@ plot_data %>%
 ~~~
 {: .language-r}
 
-
-
-~~~
-Error: Problem with `filter()` input `..2`.
-ℹ Input `..2` is `TID == yearquarter("2008 Q1")`.
-✖ Can't combine `..1` <character> and `..2` <yearquarter>.
-~~~
-{: .error}
+<img src="../fig/rmd-04-barplot-theme-bw-1.png" title="plot of chunk barplot-theme-bw" alt="plot of chunk barplot-theme-bw" width="612" style="display: block; margin: auto;" />
 
 
 
