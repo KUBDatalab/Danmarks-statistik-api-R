@@ -40,9 +40,7 @@ You can get output from R simply by typing math in the console:
 12 / 7
 ```
 
-However, to do useful and interesting things, we need to assign _values_ to
-_objects_. To create an object, we need to give it a name followed by the
-assignment operator `<-`, and the value we want to give it:
+We can assign values to variables:
 
 ```{r, purl=FALSE}
 area_hectares <- 1.0
@@ -52,32 +50,6 @@ area_hectares <- 1.0
 the left. So, after executing `x <- 3`, the value of `x` is `3`. The arrow can
 be read as 3 **goes into** `x`.  
 
-
-Objects can be given any name such as `x`, `current_temperature`, or
-`subject_id`. You want your object names to be explicit and not too long. They
-cannot start with a number (`2x` is not valid, but `x2` is). R is case sensitive
-(e.g., `age` is different from `Age`). There are some names that
-cannot be used because they are the names of fundamental objects in R (e.g.,
-`if`, `else`, `for`.
-
-> ## Objects vs. variables
->
-> What are known as `objects` in `R` are known as `variables` in many other
-> programming languages. Depending on the context, `object` and `variable` can
-> have drastically different meanings. However, in this lesson, the two words
-> are used synonymously. For more information see:
-> [https://cran.r-project.org/doc/manuals/r-release/R-lang.html#Objects](https://cran.r-project.org/doc/manuals/r-release/R-lang.html#Objects)
-{: .callout}
-
-When assigning a value to an object, R does not print anything. You
-can force R to print the value by using parentheses or by typing
-the object name:
-
-```{r, purl=FALSE}
-area_hectares <- 1.0    # doesn't print anything
-(area_hectares <- 1.0)  # putting parenthesis around the call prints the value of `area_hectares`
-area_hectares         # and so does typing the name of the object
-```
 
 Now that R has `area_hectares` in memory, we can do arithmetic with it. For
 instance, we may want to convert this area into acres (area in acres is 2.47 times the area in hectares):
@@ -93,32 +65,6 @@ area_hectares <- 2.5
 2.47 * area_hectares
 ```
 
-This means that assigning a value to one object does not change the values of
-other objects. For example, let's store the plot's area in acres
-in a new object, `area_acres`:
-
-```{r, purl=FALSE}
-area_acres <- 2.47 * area_hectares
-```
-
-and then change `area_hectares` to 50.
-
-```{r, purl=FALSE}
-area_hectares <- 50
-```
-
-> ## Exercise
-> 
-> What do you think is the current content of the object `area_acres`? 123.5 or
-> 6.175?
->
-> > ## Solution
-> >
-> > The value of `area_acres` is still 6.175 because you have not
-> > re-run the line `area_acres <- 2.47 * area_hectares` since
-> > changing the value of `area_hectares`.
-> {: .solution}
-{: .challenge}
 
 ## Comments
 
@@ -131,42 +77,6 @@ area_hectares <- 1.0			# land area in hectares
 area_acres <- area_hectares * 2.47	# convert to acres
 area_acres				# print land area in acres.
 ```
-
-RStudio makes it easy to comment or uncomment a paragraph: after selecting the
-lines you  want to comment, press at the same time on your keyboard
-<kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>C</kbd>. If you only want to comment
-out one line, you can put the cursor at any location of that line (i.e. no need
-to select the whole line), then press <kbd>Ctrl</kbd> + <kbd>Shift</kbd> +
-<kbd>C</kbd>.
-
-
-> ## Exercise
->
-> Create two variables `r_length` and `r_width` and assign them values. It should be noted that, 
-> because `length` is a built-in R function, R Studio might add "()" after you type `length` and 
-> if you leave the parentheses you will get unexpected results. 
-> This is why you might see other programmers abbreviate common words.
-> Create a third variable `r_area` and give it a value based on the current values of `r_length` 
-> and `r_width`.
-> Show that changing the values of either `r_length` and `r_width` does not affect the value of 
-> `r_area`.
-> 
-> > ## Solution
-> > 
-> > ```{r}
-> > r_length <- 2.5
-> > r_width <- 3.2
-> > r_area <- r_length * r_width
-> > r_area
-> > # change the values of r_length and r_width
-> > r_length <- 7.0
-> > r_width <- 6.5
-> > # the value of r_area isn't changed
-> > r_area
-> > ```
-> > 
-> {: .solution}
-{: .challenge}
 
 
 ### Functions and their arguments
@@ -183,22 +93,6 @@ is called *calling* the function. An example of a function call is:
 ```{r, eval=FALSE, purl=FALSE}
 b <- sqrt(a)
 ```
-Here, the value of `a` is given to the `sqrt()` function, the `sqrt()` function
-calculates the square root, and returns the value which is then assigned to
-the object `b`. This function is very simple, because it takes just one argument.
-
-The return 'value' of a function need not be numerical (like that of `sqrt()`),
-and it also does not need to be a single item: it can be a set of things, or
-even a dataset. We'll see that when we read data files into R.
-
-Arguments can be anything, not only numbers or filenames, but also other
-objects. Exactly what each argument means differs per function, and must be
-looked up in the documentation (see below). Some functions take arguments which
-may either be specified by the user, or, if left out, take on a *default* value:
-these are called *options*. Options are typically used to alter the way the
-function operates, such as whether it ignores 'bad values', or what symbol to
-use in a plot.  However, if you want something specific, you can specify a value
-of your choice which will be used instead of the default.
 
 Let's try a function that can take multiple arguments: `round()`.
 
@@ -208,14 +102,9 @@ round(3.14159)
 
 
 Here, we've called `round()` with just one argument, `3.14159`, and it has
-returned the value `3`.  That's because the default is to round to the nearest
-whole number. If we want more digits we can see how to do that by getting
-information about the `round` function.  We can use `args(round)` or look at the
-help for this function using `?round`.
+returned the value `3`. 
 
-```{r, results='show', purl=FALSE}
-args(round)
-```
+We can get information on how a function works, with the help function:
 
 ```{r, eval=FALSE, purl=FALSE}
 ?round
@@ -228,31 +117,7 @@ type `digits=2` or however many we want.
 round(3.14159, digits = 2)
 ```
 
-If you provide the arguments in the exact same order as they are defined you
-don't have to name them:
 
-```{r, results='show', purl=FALSE}
-round(3.14159, 2)
-```
-
-And if you do name the arguments, you can switch their order:
-
-```{r, results='show', purl=FALSE}
-round(digits = 2, x = 3.14159)
-```
-
-It's good practice to put the non-optional arguments (like the number you're
-rounding) first in your function call, and to specify the names of all optional
-arguments.  If you don't, someone reading your code might have to look up the
-definition of a function with unfamiliar arguments to understand what you're
-doing.
-
-> ## Exercise
->
-> Type in `?round` at the console and then look at the output in the Help pane.
-> What other functions exist that are similar to `round`?
-> How do you use the `digits` parameter in the round function?
-{: .challenge}
 
 ## Vectors and data types
 
