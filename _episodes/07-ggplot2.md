@@ -88,6 +88,24 @@ dbl (1): INDHOLD
 ~~~
 {: .output}
 
+We read in data from a csv-file. That is stored as text, so we need to convert
+the "TID" column to something that can be understood as time by R:
+
+
+~~~
+SD_data <- SD_data %>% mutate(TID = yearquarter(TID)
+~~~
+{: .language-r}
+
+
+
+~~~
+Error: <text>:2:0: unexpected end of input
+1: SD_data <- SD_data %>% mutate(TID = yearquarter(TID)
+   ^
+~~~
+{: .error}
+
 
 ## Plotting with **`ggplot2`**
 
@@ -387,7 +405,7 @@ plot_data %>% ggplot(aes(CIVILSTAND, INDHOLD)) +
 ~~~
 {: .language-r}
 
-<img src="../fig/rmd-04-unnamed-chunk-3-1.png" title="plot of chunk unnamed-chunk-3" alt="plot of chunk unnamed-chunk-3" width="612" style="display: block; margin: auto;" />
+<img src="../fig/rmd-04-unnamed-chunk-4-1.png" title="plot of chunk unnamed-chunk-4" alt="plot of chunk unnamed-chunk-4" width="612" style="display: block; margin: auto;" />
 Now we get the values from INDHOLD plotted on the y-axis. But we get ALL the 
 values from INDHOLD plotted. And we have INDHOLD from several years, from 
 several administrative parts of Denmark.
