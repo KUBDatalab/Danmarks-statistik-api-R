@@ -23,7 +23,7 @@ questions:
 source("../bin/chunk-options.R")
 knitr_fig_path("06-")
 source("../bin/download_data.R")
-install.packages("danstat")
+install.packages("danstat", repos = "http://cran.us.r-project.org")
 library(tidyverse)
 ```
 
