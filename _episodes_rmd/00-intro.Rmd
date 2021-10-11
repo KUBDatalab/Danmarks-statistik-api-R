@@ -396,4 +396,12 @@ We are going to use the library **`danstat`**. Please install by running this co
 install.packages("danstat")
 ```
 
+If that fails... try this:
+```{r, eval =F}
+install.packages("remotes")
+library(remotes)
+remotes:install_github("cran/danstat")
+```
+
+
 {% include links.md %}

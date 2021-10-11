@@ -500,12 +500,12 @@ interviews %>% select(village, memb_assoc)
 We select a set of rows by using the filter function:
 
 ```{r}
-interviews %>% filter(village = "Chirodzo")
+interviews %>% filter(village == "Chirodzo")
 ```
 
 We make a new column using the mutate function:
 ```{r}
-interview %>% mutate(new_column_name = no_membrs * 10)
+interviews %>% mutate(new_column_name = no_membrs * 10)
 ```
 
 We calculate summary statistics by using the summarize function:
