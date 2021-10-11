@@ -23,9 +23,8 @@ questions:
 source("../bin/chunk-options.R")
 knitr_fig_path("06-")
 source("../bin/download_data.R")
-install.packages("remotes", repos = "http://cran.us.r-project.org" )
 library(remotes)
-remotes:install_github("cran/danstat")
+remotes::install_github("cran/danstat")
 library(danstat)
 library(tidyverse)
 ```
