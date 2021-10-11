@@ -105,6 +105,14 @@ Before using the library, we need to install it:
 install.packages("danstat")
 ```
 
+Some installations of R may have problems installing it. In that case, try this:
+```{r eval =F}
+install.packages("remotes")
+library(remotes)
+remotes:install_github("cran/danstat")
+```
+
+
 After installation, we load the library using the library function. And then 
 we can access the functions included in the library:
 
