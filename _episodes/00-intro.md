@@ -394,4 +394,14 @@ install.packages("danstat")
 ~~~
 {: .language-r}
 
+If that fails... try this:
+
+~~~
+install.packages("remotes")
+library(remotes)
+remotes:install_github("cran/danstat")
+~~~
+{: .language-r}
+
+
 {% include links.md %}

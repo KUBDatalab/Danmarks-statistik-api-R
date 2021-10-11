@@ -23,7 +23,9 @@ questions:
 source("../bin/chunk-options.R")
 knitr_fig_path("06-")
 source("../bin/download_data.R")
-install.packages("danstat", repos = "http://cran.us.r-project.org")
+library(remotes)
+remotes::install_github("cran/danstat")
+library(danstat)
 library(tidyverse)
 ```
 
@@ -102,6 +104,14 @@ Before using the library, we need to install it:
 ```{r eval=F}
 install.packages("danstat")
 ```
+
+Some installations of R may have problems installing it. In that case, try this:
+```{r eval =F}
+install.packages("remotes")
+library(remotes)
+remotes:install_github("cran/danstat")
+```
+
 
 After installation, we load the library using the library function. And then 
 we can access the functions included in the library:

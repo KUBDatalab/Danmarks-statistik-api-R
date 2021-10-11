@@ -1001,33 +1001,62 @@ We select a set of rows by using the filter function:
 
 
 ~~~
-interviews %>% filter(village = "Chirodzo")
+interviews %>% filter(village == "Chirodzo")
 ~~~
 {: .language-r}
 
 
 
 ~~~
-Error: Problem with `filter()` input `..1`.
-✖ Input `..1` is named.
-ℹ This usually means that you've used `=` instead of `==`.
-ℹ Did you mean `village == "Chirodzo"`?
+# A tibble: 39 × 17
+   key_ID village interview_date      no_membrs years_liv respondent_wall… rooms
+    <dbl> <chr>   <dttm>                  <dbl>     <dbl> <chr>            <dbl>
+ 1      8 Chirod… 2016-11-16 00:00:00        12        70 burntbricks          3
+ 2      9 Chirod… 2016-11-16 00:00:00         8         6 burntbricks          1
+ 3     10 Chirod… 2016-12-16 00:00:00        12        23 burntbricks          5
+ 4     34 Chirod… 2016-11-17 00:00:00         8        18 burntbricks          3
+ 5     35 Chirod… 2016-11-17 00:00:00         5        45 muddaub              1
+ 6     36 Chirod… 2016-11-17 00:00:00         6        23 sunbricks            1
+ 7     37 Chirod… 2016-11-17 00:00:00         3         8 burntbricks          1
+ 8     43 Chirod… 2016-11-17 00:00:00         7        29 muddaub              1
+ 9     44 Chirod… 2016-11-17 00:00:00         2         6 muddaub              1
+10     45 Chirod… 2016-11-17 00:00:00         9         7 muddaub              1
+# … with 29 more rows, and 10 more variables: memb_assoc <chr>,
+#   affect_conflicts <chr>, liv_count <dbl>, items_owned <chr>, no_meals <dbl>,
+#   months_lack_food <chr>, instanceID <chr>, day <int>, month <dbl>,
+#   year <dbl>
 ~~~
-{: .error}
+{: .output}
 
 We make a new column using the mutate function:
 
 ~~~
-interview %>% mutate(new_column_name = no_membrs * 10)
+interviews %>% mutate(new_column_name = no_membrs * 10)
 ~~~
 {: .language-r}
 
 
 
 ~~~
-Error in mutate(., new_column_name = no_membrs * 10): object 'interview' not found
+# A tibble: 131 × 18
+   key_ID village interview_date      no_membrs years_liv respondent_wall… rooms
+    <dbl> <chr>   <dttm>                  <dbl>     <dbl> <chr>            <dbl>
+ 1      1 God     2016-11-17 00:00:00         3         4 muddaub              1
+ 2      1 God     2016-11-17 00:00:00         7         9 muddaub              1
+ 3      3 God     2016-11-17 00:00:00        10        15 burntbricks          1
+ 4      4 God     2016-11-17 00:00:00         7         6 burntbricks          1
+ 5      5 God     2016-11-17 00:00:00         7        40 burntbricks          1
+ 6      6 God     2016-11-17 00:00:00         3         3 muddaub              1
+ 7      7 God     2016-11-17 00:00:00         6        38 muddaub              1
+ 8      8 Chirod… 2016-11-16 00:00:00        12        70 burntbricks          3
+ 9      9 Chirod… 2016-11-16 00:00:00         8         6 burntbricks          1
+10     10 Chirod… 2016-12-16 00:00:00        12        23 burntbricks          5
+# … with 121 more rows, and 11 more variables: memb_assoc <chr>,
+#   affect_conflicts <chr>, liv_count <dbl>, items_owned <chr>, no_meals <dbl>,
+#   months_lack_food <chr>, instanceID <chr>, day <int>, month <dbl>,
+#   year <dbl>, new_column_name <dbl>
 ~~~
-{: .error}
+{: .output}
 
 We calculate summary statistics by using the summarize function:
 
