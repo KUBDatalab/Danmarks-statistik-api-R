@@ -56,7 +56,7 @@ remotes::install_github("cran/danstat")
 
 
 ~~~
-## * checking for file ‘/tmp/Rtmp87Oc3M/remotes2ec83549fa0e/cran-danstat-b7c0138/DESCRIPTION’ ... OK
+## * checking for file ‘/tmp/RtmpWsxMGg/remotes2f1155fd76e6/cran-danstat-b7c0138/DESCRIPTION’ ... OK
 ## * preparing ‘danstat’:
 ## * checking DESCRIPTION meta-information ... OK
 ## * checking vignette meta-information ... OK
