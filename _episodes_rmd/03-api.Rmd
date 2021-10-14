@@ -19,7 +19,7 @@ questions:
 
 ---
 
-```{r setup, include = T, echo=F}
+```{r setup, include = F, echo=F}
 source("../bin/chunk-options.R")
 knitr_fig_path("06-")
 source("../bin/download_data.R")
