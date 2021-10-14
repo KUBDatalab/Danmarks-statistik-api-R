@@ -21,7 +21,7 @@ questions:
 
 ```{r setup, include = F, echo=F}
 source("../bin/chunk-options.R")
-knitr_fig_path("06-")
+knitr_fig_path("03-")
 source("../bin/download_data.R")
 library(remotes)
 remotes::install_github("cran/danstat")
@@ -76,8 +76,7 @@ specific APIs easier. The one we are going to use here is called "danstat"
 
 
 Before doing anything else, it is useful to take a look at the result:
-```{r echo = F}
-library(danstat)
+```{r initial-data, echo = F, message=F}
 variables <- list(list(code = "ieland", values = c(5100, 5128)),
                   list(code = "køn", values = c(1,2)),
                   list(code = "tid", values = NA))
@@ -101,12 +100,12 @@ Let us begin there.
 
 Before using the library, we need to install it:
 
-```{r eval=F}
+```{r how-to-install-danstat, eval=F}
 install.packages("danstat")
 ```
 
 Some installations of R may have problems installing it. In that case, try this:
-```{r eval =F}
+```{r alternative-danstat-install, eval =F}
 install.packages("remotes")
 library(remotes)
 remotes:install_github("cran/danstat")
@@ -120,7 +119,7 @@ The get_subjects() function sends a request to the Statistics Denmark API, askin
 for a list of the subjects. The information is returned to our script, and the
 get_subjects() function presents us with a dataframe containing the information.
 
-```{r}
+```{r get-subjects}
 library(danstat)
 subjects <- get_subjects()
 subjects
@@ -136,7 +135,7 @@ this time specifying which subject we are interested in:
 Let us try to get the sub-subjects from the subject 1 - containing information
 about populations and elections:
 
-```{r}
+```{r get-sub-subjects}
 sub_subjects <- get_subjects(subjects = 1)
 sub_subjects
 ```
@@ -152,7 +151,7 @@ The result is a bit complicated. The column "subjects" in the resulting datafram
 contains another dataframe. We access it like we normally would access a 
 column in a dataframe:
 
-```{r}
+```{r show-sub-sub-subjects}
 sub_subjects$subjects
 ```
 
@@ -203,7 +202,7 @@ The get_tables() function returns a dataframe with information about the
 tables available for a given subject.
 
 
-```{r}
+```{r get-tables}
 tables <- get_tables(subjects="20021")
 tables
 ```
@@ -218,7 +217,7 @@ the table.
 Before we pull out the data, we need to know which variables are available
 in the table. We do this with this function:
 
-```{r}
+```{r get-metadata}
 metadata <- get_table_metadata("FOLK1A", variables_only = T)
 metadata
 ```
@@ -231,7 +230,7 @@ parameter "variables_only = T".
 
 What kind of values can the individual datapoints take?
 
-```{r}
+```{r get-values}
 metadata %>% slice(4) %>% pull(values)
 ```
 

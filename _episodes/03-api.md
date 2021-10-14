@@ -72,32 +72,6 @@ specific APIs easier. The one we are going to use here is called "danstat"
 Before doing anything else, it is useful to take a look at the result:
 
 ~~~
-Rows: 220 Columns: 4
-~~~
-{: .output}
-
-
-
-~~~
-── Column specification ────────────────────────────────────────────────────────
-Delimiter: ";"
-chr (3): IELAND, KØN, TID
-dbl (1): INDHOLD
-~~~
-{: .output}
-
-
-
-~~~
-
-ℹ Use `spec()` to retrieve the full column specification for this data.
-ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
-~~~
-{: .output}
-
-
-
-~~~
 # A tibble: 6 × 4
   IELAND  KØN   TID    INDHOLD
   <chr>   <chr> <chr>    <dbl>
