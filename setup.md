@@ -92,6 +92,10 @@ instructions to install **`tidyverse`**.
 * Once it's installed, open RStudio to make sure it works and you don't get any
   error messages.
 
+### If everything else fails
+* Go to [rstudio cloud](https://rstudio.cloud/), and sign up for a free account.
+  Rstudio cloud offers five free projects (delete one if you need to make a sixth).
+  System ressources are limited, but more than enough for this lesson.
 
 ### For everyone
 
@@ -99,15 +103,9 @@ instructions to install **`tidyverse`**.
 
 * After starting RStudio, at the console type:
   `install.packages("tidyverse")`
-
-* For reference, the lesson uses `SAFI_clean.csv`. The direct download link for
-this file is: <https://ndownloader.figshare.com/files/11492171>. To download
-from `R`:
-
-```{r eval=TRUE,  message=FALSE, purl=FALSE}
-download.file("https://ndownloader.figshare.com/files/11492171",
-              "data/SAFI_clean.csv", mode = "wb")
-```
-
-* The [json episode](https://datacarpentry.org/r-socialsci/05-json/index.html) uses 
-`SAFI.json`. The downlink link is <https://datacarpentry.org/r-socialsci/data/SAFI.json>.
+  `install.packages("danstat")`
+  
+  If the last line of code fails, try this:
+  `install.packages("remotes")`
+  `remotes::install_github("cran/danstat")`
+  

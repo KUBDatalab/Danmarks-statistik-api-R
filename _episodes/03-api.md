@@ -23,17 +23,6 @@ questions:
 
 
 ~~~
-source("../bin/chunk-options.R")
-knitr_fig_path("06-")
-source("../bin/download_data.R")
-library(remotes)
-remotes::install_github("cran/danstat")
-~~~
-{: .language-r}
-
-
-
-~~~
 ## Using github PAT from envvar GITHUB_PAT
 ~~~
 {: .output}
@@ -56,7 +45,7 @@ remotes::install_github("cran/danstat")
 
 
 ~~~
-## * checking for file ‘/tmp/RtmpWsxMGg/remotes2f1155fd76e6/cran-danstat-b7c0138/DESCRIPTION’ ... OK
+## * checking for file ‘/tmp/Rtmp1PEvg4/remotes2ebf2e28658/cran-danstat-b7c0138/DESCRIPTION’ ... OK
 ## * preparing ‘danstat’:
 ## * checking DESCRIPTION meta-information ... OK
 ## * checking vignette meta-information ... OK
@@ -74,14 +63,6 @@ remotes::install_github("cran/danstat")
 ## (as 'lib' is unspecified)
 ~~~
 {: .output}
-
-
-
-~~~
-library(danstat)
-library(tidyverse)
-~~~
-{: .language-r}
 
 
 
