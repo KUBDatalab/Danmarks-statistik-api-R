@@ -65,23 +65,11 @@ SD_data <- read_csv2("../data/SD_data.csv")
 
 
 ~~~
-Rows: 23100 Columns: 4
-~~~
-{: .output}
-
-
-
-~~~
+Rows: 23940 Columns: 4
 ── Column specification ────────────────────────────────────────────────────────
 Delimiter: ";"
 chr (3): OMRÅDE, CIVILSTAND, TID
 dbl (1): INDHOLD
-~~~
-{: .output}
-
-
-
-~~~
 
 ℹ Use `spec()` to retrieve the full column specification for this data.
 ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.

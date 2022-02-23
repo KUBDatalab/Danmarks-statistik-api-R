@@ -286,64 +286,67 @@ tables
 ~~~
          id                                                          text
 1    FOLK1A                    Population at the first day of the quarter
-2     FOLK3                                         Population 1. January
-3      BEF5                                         Population 1. January
-4        FT                          Population figures from the censuses
-5       BY1                                         Population 1. January
-6       BY2                                         Population 1. January
-7       BY3                                         Population 1. January
-8       KM1                    Population at the first day of the quarter
-9     SOGN1                                         Population 1. January
-10   SOGN10                                         Population 1. January
-11     BEF4                                         Population 1. January
-12    BEF5F People born in Faroe Islands and living in Denmark 1. January
-13    BEF5G     People born in Greenland and living in Denmark 1. January
-14    BEV22                   Summary vital statistics (provisional data)
-15   BEV107                                      Summary vital statistics
-16 KMSTA003                                      Summary vital statistics
-17   GALDER                                                   Average age
-18 KMGALDER                                                   Average age
-19    HISB3                                      Summary vital statistics
+2   FOLK1AM                      Population at the first day of the month
+3     FOLK3                                         Population 1. January
+4      BEF5                                         Population 1. January
+5        FT                          Population figures from the censuses
+6       BY1                                         Population 1. January
+7       BY2                                         Population 1. January
+8       BY3                                         Population 1. January
+9       KM1                    Population at the first day of the quarter
+10    SOGN1                                         Population 1. January
+11   SOGN10                                         Population 1. January
+12     BEF4                                         Population 1. January
+13    BEF5F People born in Faroe Islands and living in Denmark 1. January
+14    BEF5G     People born in Greenland and living in Denmark 1. January
+15    BEV22                   Summary vital statistics (provisional data)
+16   BEV107                                      Summary vital statistics
+17 KMSTA003                                      Summary vital statistics
+18   GALDER                                                   Average age
+19 KMGALDER                                                   Average age
+20    HISB3                                      Summary vital statistics
       unit             updated firstPeriod latestPeriod active
-1   Number 2021-08-11T08:00:00      2008Q1       2021Q3   TRUE
-2   Number 2021-02-11T08:00:00        2008         2021   TRUE
-3   Number 2021-02-11T08:00:00        1990         2021   TRUE
-4   Number 2021-02-11T08:00:00        1769         2021   TRUE
-5   Number 2021-04-29T08:00:00        2010         2021   TRUE
+1   Number 2022-02-11T08:00:00      2008Q1       2022Q1   TRUE
+2   Number 2022-02-11T08:00:00     2021M10      2022M01   TRUE
+3   Number 2022-02-11T08:00:00        2008         2022   TRUE
+4   Number 2022-02-11T08:00:00        1990         2022   TRUE
+5   Number 2022-02-11T08:00:00        1769         2022   TRUE
 6   Number 2021-04-29T08:00:00        2010         2021   TRUE
-7        - 2021-04-29T08:00:00        2017         2021   TRUE
-8   Number 2021-08-11T08:00:00      2007Q1       2021Q3   TRUE
-9   Number 2021-02-11T08:00:00        2010         2021   TRUE
-10  Number 2021-09-22T08:00:00        1925         2021   TRUE
-11  Number 2021-03-31T08:00:00        1901         2021   TRUE
-12  Number 2021-02-11T08:00:00        2008         2021   TRUE
-13  Number 2021-02-11T08:00:00        2008         2021   TRUE
-14  Number 2021-08-11T08:00:00      2007Q2       2021Q2   TRUE
-15  Number 2021-02-11T08:00:00        2006         2020   TRUE
-16  Number 2021-02-11T08:00:00        2015         2020   TRUE
-17 Average 2021-02-11T08:00:00        2005         2021   TRUE
-18 Average 2021-02-11T08:00:00        2007         2021   TRUE
-19  Number 2021-02-12T08:00:00        1901         2021   TRUE
+7   Number 2021-04-29T08:00:00        2010         2021   TRUE
+8        - 2021-04-29T08:00:00        2017         2021   TRUE
+9   Number 2022-02-17T08:00:00      2007Q1       2022Q1   TRUE
+10  Number 2022-02-17T08:00:00        2010         2022   TRUE
+11  Number 2021-09-22T08:00:00        1925         2021   TRUE
+12  Number 2021-03-31T08:00:00        1901         2021   TRUE
+13  Number 2022-02-11T08:00:00        2008         2022   TRUE
+14  Number 2022-02-11T08:00:00        2008         2022   TRUE
+15  Number 2022-02-11T08:00:00      2007Q2       2021Q4   TRUE
+16  Number 2022-02-11T08:00:00        2006         2021   TRUE
+17  Number 2022-02-17T08:00:00        2015         2021   TRUE
+18 Average 2022-02-11T08:00:00        2005         2022   TRUE
+19 Average 2022-02-17T08:00:00        2007         2022   TRUE
+20  Number 2022-02-11T08:00:00        1901         2022   TRUE
                                                               variables
 1                                region, sex, age, marital status, time
-2                        day of birth, birth month, year of birth, time
-3                                      sex, age, country of birth, time
-4                                                   national part, time
-5                                 urban and rural areas, age, sex, time
-6                               municipality, city size, age, sex, time
-7  urban and rural areas, population, area and population density, time
-8                           parish, member of the National Church, time
-9                                                parish, sex, age, time
-10                                                         parish, time
-11                                                        islands, time
-12                               sex, age, parents place of birth, time
+2                                                region, sex, age, time
+3                        day of birth, birth month, year of birth, time
+4                                      sex, age, country of birth, time
+5                                                   national part, time
+6                                 urban and rural areas, age, sex, time
+7                               municipality, city size, age, sex, time
+8  urban and rural areas, population, area and population density, time
+9                           parish, member of the National Church, time
+10                                               parish, sex, age, time
+11                                                         parish, time
+12                                                        islands, time
 13                               sex, age, parents place of birth, time
-14                                  region, type of movement, sex, time
+14                               sex, age, parents place of birth, time
 15                                  region, type of movement, sex, time
-16                                              parish, movements, time
-17                                              municipality, sex, time
-18                                                    parish, sex, time
-19                                               type of movement, time
+16                                  region, type of movement, sex, time
+17                                              parish, movements, time
+18                                              municipality, sex, time
+19                                                    parish, sex, time
+20                                               type of movement, time
 ~~~
 {: .output}
 
@@ -378,7 +381,7 @@ metadata
 2                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   TOT, 1, 2, Total, Men, Women
 3 IALT, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, Total, 0 years, 1 year, 2 years, 3 years, 4 years, 5 years, 6 years, 7 years, 8 years, 9 years, 10 years, 11 years, 12 years, 13 years, 14 years, 15 years, 16 years, 17 years, 18 years, 19 years, 20 years, 21 years, 22 years, 23 years, 24 years, 25 years, 26 years, 27 years, 28 years, 29 years, 30 years, 31 years, 32 years, 33 years, 34 years, 35 years, 36 years, 37 years, 38 years, 39 years, 40 years, 41 years, 42 years, 43 years, 44 years, 45 years, 46 years, 47 years, 48 years, 49 years, 50 years, 51 years, 52 years, 53 years, 54 years, 55 years, 56 years, 57 years, 58 years, 59 years, 60 years, 61 years, 62 years, 63 years, 64 years, 65 years, 66 years, 67 years, 68 years, 69 years, 70 years, 71 years, 72 years, 73 years, 74 years, 75 years, 76 years, 77 years, 78 years, 79 years, 80 years, 81 years, 82 years, 83 years, 84 years, 85 years, 86 years, 87 years, 88 years, 89 years, 90 years, 91 years, 92 years, 93 years, 94 years, 95 years, 96 years, 97 years, 98 years, 99 years, 100 years, 101 years, 102 years, 103 years, 104 years, 105 years, 106 years, 107 years, 108 years, 109 years, 110 years, 111 years, 112 years, 113 years, 114 years, 115 years, 116 years, 117 years, 118 years, 119 years, 120 years, 121 years, 122 years, 123 years, 124 years, 125 years
 4                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    TOT, U, G, E, F, Total, Never married, Married/separated, Widowed, Divorced
-5                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 2008K1, 2008K2, 2008K3, 2008K4, 2009K1, 2009K2, 2009K3, 2009K4, 2010K1, 2010K2, 2010K3, 2010K4, 2011K1, 2011K2, 2011K3, 2011K4, 2012K1, 2012K2, 2012K3, 2012K4, 2013K1, 2013K2, 2013K3, 2013K4, 2014K1, 2014K2, 2014K3, 2014K4, 2015K1, 2015K2, 2015K3, 2015K4, 2016K1, 2016K2, 2016K3, 2016K4, 2017K1, 2017K2, 2017K3, 2017K4, 2018K1, 2018K2, 2018K3, 2018K4, 2019K1, 2019K2, 2019K3, 2019K4, 2020K1, 2020K2, 2020K3, 2020K4, 2021K1, 2021K2, 2021K3, 2008Q1, 2008Q2, 2008Q3, 2008Q4, 2009Q1, 2009Q2, 2009Q3, 2009Q4, 2010Q1, 2010Q2, 2010Q3, 2010Q4, 2011Q1, 2011Q2, 2011Q3, 2011Q4, 2012Q1, 2012Q2, 2012Q3, 2012Q4, 2013Q1, 2013Q2, 2013Q3, 2013Q4, 2014Q1, 2014Q2, 2014Q3, 2014Q4, 2015Q1, 2015Q2, 2015Q3, 2015Q4, 2016Q1, 2016Q2, 2016Q3, 2016Q4, 2017Q1, 2017Q2, 2017Q3, 2017Q4, 2018Q1, 2018Q2, 2018Q3, 2018Q4, 2019Q1, 2019Q2, 2019Q3, 2019Q4, 2020Q1, 2020Q2, 2020Q3, 2020Q4, 2021Q1, 2021Q2, 2021Q3
+5                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 2008K1, 2008K2, 2008K3, 2008K4, 2009K1, 2009K2, 2009K3, 2009K4, 2010K1, 2010K2, 2010K3, 2010K4, 2011K1, 2011K2, 2011K3, 2011K4, 2012K1, 2012K2, 2012K3, 2012K4, 2013K1, 2013K2, 2013K3, 2013K4, 2014K1, 2014K2, 2014K3, 2014K4, 2015K1, 2015K2, 2015K3, 2015K4, 2016K1, 2016K2, 2016K3, 2016K4, 2017K1, 2017K2, 2017K3, 2017K4, 2018K1, 2018K2, 2018K3, 2018K4, 2019K1, 2019K2, 2019K3, 2019K4, 2020K1, 2020K2, 2020K3, 2020K4, 2021K1, 2021K2, 2021K3, 2021K4, 2022K1, 2008Q1, 2008Q2, 2008Q3, 2008Q4, 2009Q1, 2009Q2, 2009Q3, 2009Q4, 2010Q1, 2010Q2, 2010Q3, 2010Q4, 2011Q1, 2011Q2, 2011Q3, 2011Q4, 2012Q1, 2012Q2, 2012Q3, 2012Q4, 2013Q1, 2013Q2, 2013Q3, 2013Q4, 2014Q1, 2014Q2, 2014Q3, 2014Q4, 2015Q1, 2015Q2, 2015Q3, 2015Q4, 2016Q1, 2016Q2, 2016Q3, 2016Q4, 2017Q1, 2017Q2, 2017Q3, 2017Q4, 2018Q1, 2018Q2, 2018Q3, 2018Q4, 2019Q1, 2019Q2, 2019Q3, 2019Q4, 2020Q1, 2020Q2, 2020Q3, 2020Q4, 2021Q1, 2021Q2, 2021Q3, 2021Q4, 2022Q1
 ~~~
 {: .output}
 
@@ -620,23 +623,11 @@ data <- get_data(table_id = "FOLK1A", variables = variables)
 
 
 ~~~
-Rows: 23100 Columns: 4
-~~~
-{: .output}
-
-
-
-~~~
+Rows: 23940 Columns: 4
 ── Column specification ────────────────────────────────────────────────────────
 Delimiter: ";"
 chr (3): OMRÅDE, CIVILSTAND, TID
 dbl (1): INDHOLD
-~~~
-{: .output}
-
-
-
-~~~
 
 ℹ Use `spec()` to retrieve the full column specification for this data.
 ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
