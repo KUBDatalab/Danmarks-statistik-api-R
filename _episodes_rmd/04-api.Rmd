@@ -1,5 +1,5 @@
 ---
-title: "What is an API?"
+title: "What about danstat?"
 teaching: 30
 exercises: 15
 output: 
@@ -15,7 +15,7 @@ keypoints:
 
 source: Rmd
 questions:
-- What is R Markdown?
+- An easier way to access Statistics Denmark
 
 ---
 

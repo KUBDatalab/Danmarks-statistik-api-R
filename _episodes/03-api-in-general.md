@@ -16,7 +16,7 @@ keypoints:
 - POST requests to servers put specific demands on how we request data
 source: Rmd
 questions:
-- What is R Markdown?
+- What is an API?
 editor_options: 
   markdown: 
     wrap: 72
@@ -96,29 +96,98 @@ Three main things:
 
 Statistics Denmark provides four "functions", or "endpoints":
 
-Billede funktion
+![](images/DSfunctions.png)
 
 The first is the "web"-site we have to send requests to if we want information 
 on the subjects in Statistics Denmark.
 
+In the second we get information about which tables are available for a 
+given subject.
+
+The third will provide metadata on a table.
+
 When we finally need the data, we will visit the last endpoint.
 
 
+Let us send a request to `subjects`.
 
+The endpoint was 
 
-After installation, we load the library using the library function. And
-then we can access the functions included in the library:
+~~~
+endpoint <- "http://api.statbank.dk/v1/subjects"
+~~~
+{: .language-r}
 
-The get_subjects() function sends a request to the Statistics Denmark
-API, asking for a list of the subjects. The information is returned to
-our script, and the get_subjects() function presents us with a dataframe
-containing the information.
+We will now need to construct a named list for the content of the body that we send along with our request.
+
+This is a new datastructure that we have not encountered before.
+
+Vectors are annoying because they can only contain one datatype. And dataframes must be rectangular. 
+
+A list allows us to store basically anything. The reason that we dont use them generally is that they are a bit more difficult to work with.
 
 
 ~~~
-library(danstat)
-subjects <- get_subjects()
-subjects
+our_body <- list(lang = "en", recursive = FALSE, 
+                  includeTables = FALSE, subjects = NULL)
+~~~
+{: .language-r}
+This list contains four elements, with names. The first, `lang`, contains a character vector (lenght 1), containing "en", the language that we want Statistics Denmark to use when returning data.
+
+`recursive` and `includeTables` are logical values, both false. And `subjects` is a special value, NULL. This is not a missing value, there simply isn't anything there. But this nothing does have a name.
+
+Now we have the two things we need, an endpoint to send a request, and a body containg what we want returned. 
+
+Let us try it:
+
+~~~
+result <- httr::POST(endpoint, body=our_body, encode = "json")
+~~~
+{: .language-r}
+
+We ask to get the result in json, a speciel datastructure that is able to contain almost anything.
+
+Let us look at the result:
+
+
+~~~
+result
+~~~
+{: .language-r}
+
+
+
+~~~
+Response [https://api.statbank.dk/v1/subjects]
+  Date: 2022-03-29 14:18
+  Status: 200
+  Content-Type: text/json; charset=utf-8
+  Size: 884 B
+~~~
+{: .output}
+Both informative. And utterly useless. The informative information is that our request succeeded (cave - it might not succeed on this webpage). We can see that in the status. 200 is an internet code for success.
+
+Let us get the content of the result, which is what we actually want:
+
+
+~~~
+httr::content(result)
+~~~
+{: .language-r}
+
+
+
+~~~
+[1] "[{\"id\":\"1\",\"description\":\"People\",\"active\":true,\"hasSubjects\":true,\"subjects\":[]},{\"id\":\"2\",\"description\":\"Labour and income\",\"active\":true,\"hasSubjects\":true,\"subjects\":[]},{\"id\":\"3\",\"description\":\"Economy\",\"active\":true,\"hasSubjects\":true,\"subjects\":[]},{\"id\":\"4\",\"description\":\"Social conditions\",\"active\":true,\"hasSubjects\":true,\"subjects\":[]},{\"id\":\"5\",\"description\":\"Education and research\",\"active\":true,\"hasSubjects\":true,\"subjects\":[]},{\"id\":\"6\",\"description\":\"Business\",\"active\":true,\"hasSubjects\":true,\"subjects\":[]},{\"id\":\"7\",\"description\":\"Transport\",\"active\":true,\"hasSubjects\":true,\"subjects\":[]},{\"id\":\"8\",\"description\":\"Culture and leisure\",\"active\":true,\"hasSubjects\":true,\"subjects\":[]},{\"id\":\"9\",\"description\":\"Environment and energy\",\"active\":true,\"hasSubjects\":true,\"subjects\":[]},{\"id\":\"19\",\"description\":\"Other\",\"active\":true,\"hasSubjects\":true,\"subjects\":[]}]"
+~~~
+{: .output}
+More informative, but not really easy to read. 
+
+The library `jsonlite` has a function that converts this to something readable:
+
+
+~~~
+jsonlite::fromJSON(httr::content(result))
 ~~~
 {: .language-r}
 
@@ -139,20 +208,30 @@ subjects
 ~~~
 {: .output}
 
-We get the 13 major subjects from Statistics Denmark. Each of them have
-sub-subjects.
+A nice dataframe with the ten major subjects in the databases of Statistics Denmark.
 
-If we want to take a closer look at the subdivisions of a given subject,
-we use the get_subjects() function again, this time specifying which
-subject we are interested in:
+Subject 1 contains information about populations and elections.
 
-Let us try to get the sub-subjects from the subject 1 - containing
-information about populations and elections:
+There are sub-subjects under that.
+We now modify our body that we send with the request, to return information about the first subject.
+
+We need to make sure that the number of the subject, `1` is intepreted as it is. This is a little bit of mysterious handwaving - we simply put the 1 inside the function `I()` and stuff works.
 
 
 ~~~
-sub_subjects <- get_subjects(subjects = 1)
-sub_subjects
+our_body <- list(lang = "en", recursive = F, 
+                  includeTables = F, subjects = I(1))
+~~~
+{: .language-r}
+
+Note that it is important that we tell the POST function that the body is the body:
+
+
+~~~
+data <- httr::POST(endpoint, body=our_body, encode = "json") %>% 
+  httr::content() %>% 
+  jsonlite::fromJSON()
+data
 ~~~
 {: .language-r}
 
@@ -166,13 +245,10 @@ sub_subjects
 ~~~
 {: .output}
 
-The result is a bit complicated. The column "subjects" in the resulting
-dataframe contains another dataframe. We access it like we normally
-would access a column in a dataframe:
-
+We now get at data frame containg a dataframe. We pick that out:
 
 ~~~
-sub_subjects$subjects
+data$subjects
 ~~~
 {: .language-r}
 
@@ -192,13 +268,44 @@ sub_subjects$subjects
 ~~~
 {: .output}
 
-Those sub-subjects have their own subjects! Lets get to the bottom of
-this, and use 2401, Population and population projections as an example:
+This was why the dollar-notation for subsetting dataframes is important.
+
+These are the sub-subjects of subject 1.
+
+Let us look closer at 3401, Population.
+
+Again, we modify the call we send to the endpoint:
+
+~~~
+our_body <- list(lang = "en", recursive = F, 
+                  includeTables = F, subjects = I(3401))
+~~~
+{: .language-r}
+
 
 
 ~~~
-sub_sub_subjects <- get_subjects("3401")
-sub_sub_subjects$subjects
+data <- httr::POST(endpoint, body=our_body, encode = "json") %>% 
+  httr::content() %>% 
+  jsonlite::fromJSON()
+data
+~~~
+{: .language-r}
+
+
+
+~~~
+    id description active hasSubjects
+1 3401  Population   TRUE        TRUE
+                                                                                                                                                                                                                                                                                              subjects
+1 20021, 20024, 20022, 20019, 20017, 20018, 20014, 20015, Population figures, Immigrants and their descendants, Population projections, Adoptions, Births, Fertility, Deaths, Life expectancy, TRUE, TRUE, TRUE, FALSE, TRUE, TRUE, TRUE, TRUE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE
+~~~
+{: .output}
+
+We delve deeper into it:
+
+~~~
+data$subjects
 ~~~
 {: .language-r}
 
@@ -217,51 +324,25 @@ sub_sub_subjects$subjects
 8 20015                  Life expectancy   TRUE       FALSE     NULL
 ~~~
 {: .output}
+And now we are at the bottom. 20021 Population figures does not have any sub-sub-subjects.
 
-Now we are at the bottom. We can see in the column "hasSubjects" that
-there are no sub_sub_sub_subjects.
+Next, let us take a look at the tables contained under subject 20021.
 
-The hierarchy is: 1 Population and elections \| 3401 Population \| 20021
-Population figures
-
-The final sub_sub_subject contains a number of tables, that actually
-contains the data we are looking for.
-
-get_subjects is able to retrieve all the sub, sub-sub and
-sub-sub-sub-jects in one go. The result is a bit confusing and difficult
-to navigate.
-
-Remember that the initial result was a dataframe containing another
-dataframe. If we go all the way to the bottom, we will get a dataframe,
-containing several dataframes, each of those containing several
-dataframes.
-
-We recommend that you do not try it, but this is how it is done:
+We need the next endpoint, which provides information about tables under a subject:
 
 
 ~~~
-lots_of_subjects <- get_subjects(1, recursive = T, include_tables = T)
+endpoint <- "http://api.statbank.dk/v1/tables"
 ~~~
 {: .language-r}
 
-The "recursive = T" parameter means that get_subjects will retrieve the
-subjects of the subjects, and then the subjects of those subjects.
-
-## Which datatables exists?
-
-But we ended up with a sub_sub_subject,
-
-20021 Population figures
-
-How do we find out which tables exists in this subject?
-
-The get_tables() function returns a dataframe with information about the
-tables available for a given subject.
-
 
 ~~~
-tables <- get_tables(subjects="20021")
-tables
+our_body <- list(lang = "en", subjects = I(20021))
+data <- httr::POST(endpoint, body=our_body, encode = "json") %>% 
+  httr::content() %>% 
+  jsonlite::fromJSON()
+data
 ~~~
 {: .language-r}
 
@@ -337,27 +418,65 @@ tables
 ~~~
 {: .output}
 
-We get at lot of information here. The id identifies the table, text
-gives a description of the table that humans can understand. When the
-table was last updated and the first and last period that the table
-contains data for.
+There are 21 tables under this subject. Let us see what information we can get about table "FOLK1A":
 
-In the variables column, we get information on what kind of data is
-stored in the table.
+We now need the third endpoint:
 
-Before we pull out the data, we need to know which variables are
-available in the table. We do this with this function:
+~~~
+endpoint <- "http://api.statbank.dk/v1/tableinfo"
+~~~
+{: .language-r}
 
 
 ~~~
-metadata <- get_table_metadata("FOLK1A", variables_only = T)
-metadata
+our_body <- list(lang = "en", table = "FOLK1A")
+data <- httr::POST(endpoint, body=our_body, encode = "json") %>% 
+  httr::content() %>% 
+  jsonlite::fromJSON()
+data
 ~~~
 {: .language-r}
 
 
 
 ~~~
+$id
+[1] "FOLK1A"
+
+$text
+[1] "Population at the first day of the quarter"
+
+$description
+[1] "Population at the first day of the quarter by region, sex, age, marital status and time"
+
+$unit
+[1] "Number"
+
+$suppressedDataValue
+[1] "0"
+
+$updated
+[1] "2022-02-11T08:00:00"
+
+$active
+[1] TRUE
+
+$contacts
+           name       phone       mail
+1 Dorthe Larsen +4539173307 dla@dst.dk
+
+$documentation
+$documentation$id
+[1] "4a12721d-a8b0-4bde-82d7-1d1c6f319de3"
+
+$documentation$url
+[1] "https://www.dst.dk/documentationofstatistics/4a12721d-a8b0-4bde-82d7-1d1c6f319de3"
+
+
+$footnote
+NULL
+
+$variables
           id           text elimination  time                     map
 1     OMRÅDE         region        TRUE FALSE denmark_municipality_07
 2        KØN            sex        TRUE FALSE                    <NA>
@@ -373,243 +492,84 @@ metadata
 ~~~
 {: .output}
 
-There is a lot of other metadata in the tables, including the phone
-number to the staffmember at Statistics Denmark that is responsible for
-maintaining the table. We are only interested in the variables, which is
-why we add the parameter "variables_only = T".
+This is a bit more complicated. We are told that:
 
-What kind of values can the individual datapoints take?
+1. there are five columns in this table.
+
+2. They each have an id
+
+3. And a descriptive text
+
+4. Elimination means that the API will attempt to eliminate the variables we have not chosen values for when data is returned. This makes sense when we get to point 7.
+
+5. time - only one of the variables contain information about a point in time.
+
+6. One of the variables can be mapped to - well a map
+
+7. The final column provides information about which values are stored in the variable. There are 105 different regions in Denmark. And if we do not choose a specific region - the API will attempt to eliminate this facetting, and return data for all of Denmark.
+
+These data provides useful information for constructing the final call to the API in order to get the data.
 
 
-~~~
-metadata %>% slice(4) %>% pull(values)
-~~~
-{: .language-r}
-
-
-
-~~~
-[[1]]
-   id              text
-1 TOT             Total
-2   U     Never married
-3   G Married/separated
-4   E           Widowed
-5   F          Divorced
-~~~
-{: .output}
-
-We use the slice function from tidyverse to pull out the fourth row of
-the dataframe, and the pull-function to pull out the values in the
-values column.
-
-The same trick can be done for the other fields in the table:
+We will now need the final endpoint:
 
 
 ~~~
-metadata %>% slice(1) %>% pull(values) %>% .[[1]] %>% head
+endpoint <- "http://api.statbank.dk/v1/data"
 ~~~
 {: .language-r}
 
+And we will need to specify which information, from which table, we want data in the body of the request. That is a bit more complicated. We need to make a list of lists!
 
 
 ~~~
-   id               text
-1 000        All Denmark
-2 084 Region Hovedstaden
-3 101         Copenhagen
-4 147      Frederiksberg
-5 155             Dragør
-6 185             Tårnby
-~~~
-{: .output}
-
-Here we see the individual municipalities in Denmark.
-
-Now we are almost ready to pull out the actual data!
-
-But first!
-
-## Which variables do we want?
-
-We need to specify which variables we want in our answer. Do we want the
-total population for all municipalities in Denmark? Or just a few? Do we
-want the total population, or do we want it broken down by sex.
-
-These variables, and the values of them, need to be specified when we
-pull the data from Statistics Denmark.
-
-We also need to provide that information in a specific way.
-
-If we want data for all municipalites, we want to pull the variable
-"OMRÅDE" from the list of variables.
-
-Therefore we need to give the function an argument containing both the
-information that we want the population data broken down by "OMRÅDE",
-and that we want all values of "OMRÅDE".
-
-Vectors are characterized by only being able to contain one type of
-data.
-
-When we need to have structures that can contain more than one type of
-data, we can use the list structure.
-
-Lists allows us to have values, with names (sometime descriptive).
-
-Lists can even contain lists.
-
-And that is what we need here. Let us make our first list:
-
-
-~~~
-list(code = "OMRÅDE", values = NA)
-~~~
-{: .language-r}
-
-
-
-~~~
-$code
-[1] "OMRÅDE"
-
-$values
-[1] NA
-~~~
-{: .output}
-
-This list have to components. One called "code", and one called
-"values". Code have the content "OMRÅDE", specifying that we want the
-variable in the data from Statistics Denmark calld "OMRÅDE".
-
-"values" has the content "NA". We use "NA", when we want to specify that
-we want all the "OMRÅDE". If we only wanted a specific municipality, we
-could instead specify it instead of writing "NA".
-
-Let us assume that we also want to break down the data based on marriage
-status.
-
-That information is stored in the variable "CIVILSTAND".
-
-And above, we saw that we had the following values in that variable:
-
-
-~~~
-metadata %>% slice(4) %>% pull(values)
-~~~
-{: .language-r}
-
-
-
-~~~
-[[1]]
-   id              text
-1 TOT             Total
-2   U     Never married
-3   G Married/separated
-4   E           Widowed
-5   F          Divorced
-~~~
-{: .output}
-
-A value for the total population is probably not that interesting, if we
-pull all the individual values for "Never married" etc.
-
-We can now make another list:
-
-
-~~~
-  list(code = "CIVILSTAND", values = c("U", "G", "E", "F"))
-~~~
-{: .language-r}
-
-
-
-~~~
-$code
-[1] "CIVILSTAND"
-
-$values
-[1] "U" "G" "E" "F"
-~~~
-{: .output}
-
-Here the "values" part is a vector containing the values we want to pull
-out for that variable.
-
-It might be interesting to take a look at how the population changes
-over time.
-
-In that case we need to pull out data from the "Tid" variable.
-
-That would look like this:
-
-
-~~~
-list(code = "Tid", values = NA)
-~~~
-{: .language-r}
-
-
-
-~~~
-$code
-[1] "Tid"
-
-$values
-[1] NA
-~~~
-{: .output}
-
-If we want to pull data broken down by all three variables, we need to
-provide a list, containing three lists.
-
-We do that using this code:
-
-
-~~~
-variables <- list(list(code = "OMRÅDE", values = NA),
-                  list(code = "CIVILSTAND", values = c("U", "G", "E", "F")),
-                  list(code = "Tid", values = NA)
+variables <- list(list(code = "OMRÅDE", values = I("*")),
+                  list(code = "CIVILSTAND", values = I(c("U", "G", "E", "F"))),
+                  list(code = "Tid", values = I("*"))
               )
-variables
+
+our_body <- list(table = "FOLK1A", lang = "en", format = "CSV", variables = variables)
+~~~
+{: .language-r}
+
+The final endpoint is:
+
+
+~~~
+endpoint <- "https://api.statbank.dk/v1/data"
+~~~
+{: .language-r}
+
+And the call:
+
+
+~~~
+data <- httr::POST(endpoint, body=our_body, encode = "json")
+~~~
+{: .language-r}
+
+The data is returned as csv - we defined that in "our_body", so we now need to extract it a bit differently:
+
+~~~
+data <- data %>% 
+  httr::content(type = "text") %>% 
+  read_csv2()
 ~~~
 {: .language-r}
 
 
 
 ~~~
-[[1]]
-[[1]]$code
-[1] "OMRÅDE"
-
-[[1]]$values
-[1] NA
-
-
-[[2]]
-[[2]]$code
-[1] "CIVILSTAND"
-
-[[2]]$values
-[1] "U" "G" "E" "F"
-
-
-[[3]]
-[[3]]$code
-[1] "Tid"
-
-[[3]]$values
-[1] NA
+ℹ Using "','" as decimal and "'.'" as grouping mark. Use `read_delim()` for more control.
 ~~~
 {: .output}
 
-And now, finally, we are ready to get the data!
 
 
 ~~~
-data <- get_data(table_id = "FOLK1A", variables = variables)
+No encoding supplied: defaulting to UTF-8.
 ~~~
-{: .language-r}
+{: .output}
 
 
 
@@ -625,38 +585,39 @@ dbl (1): INDHOLD
 ~~~
 {: .output}
 
-It takes a short moment. But now we have a dataframe containing the data
-we requested:
 
 
 ~~~
-head(data)
+data
 ~~~
 {: .language-r}
 
 
 
 ~~~
-# A tibble: 6 × 4
-  OMRÅDE      CIVILSTAND    TID    INDHOLD
-  <chr>       <chr>         <chr>    <dbl>
-1 All Denmark Never married 2008Q1 2552700
-2 All Denmark Never married 2008Q2 2563134
-3 All Denmark Never married 2008Q3 2564705
-4 All Denmark Never married 2008Q4 2568255
-5 All Denmark Never married 2009Q1 2575185
-6 All Denmark Never married 2009Q2 2584993
+# A tibble: 23,940 × 4
+   OMRÅDE      CIVILSTAND    TID    INDHOLD
+   <chr>       <chr>         <chr>    <dbl>
+ 1 All Denmark Never married 2008Q1 2552700
+ 2 All Denmark Never married 2008Q2 2563134
+ 3 All Denmark Never married 2008Q3 2564705
+ 4 All Denmark Never married 2008Q4 2568255
+ 5 All Denmark Never married 2009Q1 2575185
+ 6 All Denmark Never married 2009Q2 2584993
+ 7 All Denmark Never married 2009Q3 2584560
+ 8 All Denmark Never married 2009Q4 2588198
+ 9 All Denmark Never married 2010Q1 2593172
+10 All Denmark Never married 2010Q2 2604129
+# … with 23,930 more rows
 ~~~
 {: .output}
 
-This procedure will work for all the tables from Statistics Denmark!
+Voila! We have a dataframe with information about how many persons in Denmark were married (or not) at different points in time.
 
-The data is nicely formatted and ready to use. Almost.
+That was a bit complicated. There are easier ways to do it.
 
-Before we do anything else, let us save the data.
+We will look at that shortly. So why do it this way? These techniques are the same techniques we use when we access an arbitrary other API. The fields, endpoints etc might be different. We might have an added complication of having to login to it. But the techniques can be reused.
 
 
-~~~
-write_csv2(data, "../data/SD_data.csv")
-~~~
-{: .language-r}
+
+
