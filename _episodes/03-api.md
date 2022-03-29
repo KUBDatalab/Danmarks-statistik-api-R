@@ -288,65 +288,68 @@ tables
 1    FOLK1A                    Population at the first day of the quarter
 2   FOLK1AM                      Population at the first day of the month
 3     FOLK3                                         Population 1. January
-4      BEF5                                         Population 1. January
-5        FT                          Population figures from the censuses
-6       BY1                                         Population 1. January
-7       BY2                                         Population 1. January
-8       BY3                                         Population 1. January
-9       KM1                    Population at the first day of the quarter
-10    SOGN1                                         Population 1. January
-11   SOGN10                                         Population 1. January
-12     BEF4                                         Population 1. January
-13    BEF5F People born in Faroe Islands and living in Denmark 1. January
-14    BEF5G     People born in Greenland and living in Denmark 1. January
-15    BEV22                   Summary vital statistics (provisional data)
-16   BEV107                                      Summary vital statistics
-17 KMSTA003                                      Summary vital statistics
-18   GALDER                                                   Average age
-19 KMGALDER                                                   Average age
-20    HISB3                                      Summary vital statistics
+4  FOLK3FOD                                         Population 1. January
+5      BEF5                                         Population 1. January
+6        FT                          Population figures from the censuses
+7       BY1                                         Population 1. January
+8       BY2                                         Population 1. January
+9       BY3                                         Population 1. January
+10      KM1                    Population at the first day of the quarter
+11    SOGN1                                         Population 1. January
+12   SOGN10                                         Population 1. January
+13     BEF4                                         Population 1. January
+14    BEF5F People born in Faroe Islands and living in Denmark 1. January
+15    BEF5G     People born in Greenland and living in Denmark 1. January
+16    BEV22                   Summary vital statistics (provisional data)
+17   BEV107                                      Summary vital statistics
+18 KMSTA003                                      Summary vital statistics
+19   GALDER                                                   Average age
+20 KMGALDER                                                   Average age
+21    HISB3                                      Summary vital statistics
       unit             updated firstPeriod latestPeriod active
 1   Number 2022-02-11T08:00:00      2008Q1       2022Q1   TRUE
-2   Number 2022-02-11T08:00:00     2021M10      2022M01   TRUE
+2   Number 2022-03-07T08:00:00     2021M10      2022M02   TRUE
 3   Number 2022-02-11T08:00:00        2008         2022   TRUE
-4   Number 2022-02-11T08:00:00        1990         2022   TRUE
-5   Number 2022-02-11T08:00:00        1769         2022   TRUE
-6   Number 2021-04-29T08:00:00        2010         2021   TRUE
+4   Number 2022-03-18T08:00:00        2008         2022   TRUE
+5   Number 2022-02-11T08:00:00        1990         2022   TRUE
+6   Number 2022-02-11T08:00:00        1769         2022   TRUE
 7   Number 2021-04-29T08:00:00        2010         2021   TRUE
-8        - 2021-04-29T08:00:00        2017         2021   TRUE
-9   Number 2022-02-17T08:00:00      2007Q1       2022Q1   TRUE
-10  Number 2022-02-17T08:00:00        2010         2022   TRUE
-11  Number 2021-09-22T08:00:00        1925         2021   TRUE
-12  Number 2021-03-31T08:00:00        1901         2021   TRUE
-13  Number 2022-02-11T08:00:00        2008         2022   TRUE
+8   Number 2021-04-29T08:00:00        2010         2021   TRUE
+9        - 2021-04-29T08:00:00        2017         2021   TRUE
+10  Number 2022-02-17T08:00:00      2007Q1       2022Q1   TRUE
+11  Number 2022-02-17T08:00:00        2010         2022   TRUE
+12  Number 2021-09-22T08:00:00        1925         2021   TRUE
+13  Number 2021-03-31T08:00:00        1901         2021   TRUE
 14  Number 2022-02-11T08:00:00        2008         2022   TRUE
-15  Number 2022-02-11T08:00:00      2007Q2       2021Q4   TRUE
-16  Number 2022-02-11T08:00:00        2006         2021   TRUE
-17  Number 2022-02-17T08:00:00        2015         2021   TRUE
-18 Average 2022-02-11T08:00:00        2005         2022   TRUE
-19 Average 2022-02-17T08:00:00        2007         2022   TRUE
-20  Number 2022-02-11T08:00:00        1901         2022   TRUE
+15  Number 2022-02-11T08:00:00        2008         2022   TRUE
+16  Number 2022-02-11T08:00:00      2007Q2       2021Q4   TRUE
+17  Number 2022-02-11T08:00:00        2006         2021   TRUE
+18  Number 2022-02-17T08:00:00        2015         2021   TRUE
+19 Average 2022-02-11T08:00:00        2005         2022   TRUE
+20 Average 2022-02-17T08:00:00        2007         2022   TRUE
+21  Number 2022-02-11T08:00:00        1901         2022   TRUE
                                                               variables
 1                                region, sex, age, marital status, time
 2                                                region, sex, age, time
 3                        day of birth, birth month, year of birth, time
-4                                      sex, age, country of birth, time
-5                                                   national part, time
-6                                 urban and rural areas, age, sex, time
-7                               municipality, city size, age, sex, time
-8  urban and rural areas, population, area and population density, time
-9                           parish, member of the National Church, time
-10                                               parish, sex, age, time
-11                                                         parish, time
-12                                                        islands, time
-13                               sex, age, parents place of birth, time
+4                     day of birth, birth month, country of birth, time
+5                                      sex, age, country of birth, time
+6                                                   national part, time
+7                                 urban and rural areas, age, sex, time
+8                               municipality, city size, age, sex, time
+9  urban and rural areas, population, area and population density, time
+10                          parish, member of the National Church, time
+11                                               parish, sex, age, time
+12                                                         parish, time
+13                                                        islands, time
 14                               sex, age, parents place of birth, time
-15                                  region, type of movement, sex, time
+15                               sex, age, parents place of birth, time
 16                                  region, type of movement, sex, time
-17                                              parish, movements, time
-18                                              municipality, sex, time
-19                                                    parish, sex, time
-20                                               type of movement, time
+17                                  region, type of movement, sex, time
+18                                              parish, movements, time
+19                                              municipality, sex, time
+20                                                    parish, sex, time
+21                                               type of movement, time
 ~~~
 {: .output}
 
