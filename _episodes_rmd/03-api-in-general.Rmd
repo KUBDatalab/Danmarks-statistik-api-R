@@ -50,8 +50,11 @@ Statistics Denmark, in order to retrieve specific data.
 This is equivalent to requesting a page from a webserver.
 
 The HTTP protocol can be visualized like this:
+```{r http-structure, echo = FALSE, fig.show = "hold", out.width = "100%", fig.alt = " "}
 
-![](images/http-structure.png)
+knitr::include_graphics("../fig/http-structure.png")
+```
+
 
 -   When we type in an URL in our browser, it translates that URL to a
     HTTP-request.

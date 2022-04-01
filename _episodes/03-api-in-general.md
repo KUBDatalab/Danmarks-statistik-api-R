@@ -44,8 +44,8 @@ Statistics Denmark, in order to retrieve specific data.
 This is equivalent to requesting a page from a webserver.
 
 The HTTP protocol can be visualized like this:
+<img src="../fig/http-structure.png" title=" " alt=" " width="100%" style="display: block; margin: auto;" />
 
-![](images/http-structure.png)
 
 -   When we type in an URL in our browser, it translates that URL to a
     HTTP-request.
@@ -159,7 +159,7 @@ result
 
 ~~~
 Response [https://api.statbank.dk/v1/subjects]
-  Date: 2022-03-29 14:18
+  Date: 2022-04-01 10:45
   Status: 200
   Content-Type: text/json; charset=utf-8
   Size: 884 B

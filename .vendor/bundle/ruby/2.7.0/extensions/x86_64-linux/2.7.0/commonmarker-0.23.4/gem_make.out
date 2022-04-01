@@ -1,5 +1,5 @@
 current directory: /home/runner/work/Danmarks-statistik-api-R/Danmarks-statistik-api-R/.vendor/bundle/ruby/2.7.0/gems/commonmarker-0.23.4/ext/commonmarker
-/opt/hostedtoolcache/Ruby/2.7.5/x64/bin/ruby -I /opt/hostedtoolcache/Ruby/2.7.5/x64/lib/ruby/2.7.0 -r ./siteconf20220329-11808-bjavsv.rb extconf.rb
+/opt/hostedtoolcache/Ruby/2.7.5/x64/bin/ruby -I /opt/hostedtoolcache/Ruby/2.7.5/x64/lib/ruby/2.7.0 -r ./siteconf20220401-12138-7q5qpd.rb extconf.rb
 creating Makefile
 
 current directory: /home/runner/work/Danmarks-statistik-api-R/Danmarks-statistik-api-R/.vendor/bundle/ruby/2.7.0/gems/commonmarker-0.23.4/ext/commonmarker
@@ -225,5 +225,5 @@ make[1]: Entering directory '/home/runner/work/Danmarks-statistik-api-R/Danmarks
 Makefile:260: warning: overriding recipe for target 'commonmarker.so'
 make[1]: Entering directory '/home/runner/work/Danmarks-statistik-api-R/Danmarks-statistik-api-R/.vendor/bundle/ruby/2.7.0/gems/commonmarker-0.23.4/ext/commonmarker'
 :260: warning: ignoring old recipe for target 'commonmarker.so'
-/usr/bin/install -c -m 0755 commonmarker.so ./.gem.20220329-11808-zuhio5/commonmarker
+/usr/bin/install -c -m 0755 commonmarker.so ./.gem.20220401-12138-1sn6pl0/commonmarker
 make[1]: Leaving directory '/home/runner/work/Danmarks-statistik-api-R/Danmarks-statistik-api-R/.vendor/bundle/ruby/2.7.0/gems/commonmarker-0.23.4/ext/commonmarker'
