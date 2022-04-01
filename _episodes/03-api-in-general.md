@@ -96,7 +96,8 @@ Three main things:
 
 Statistics Denmark provides four "functions", or "endpoints":
 
-![](images/DSfunctions.png)
+<img src="../fig/DSfunctions.png" title=" " alt=" " width="100%" style="display: block; margin: auto;" />
+
 
 The first is the "web"-site we have to send requests to if we want information 
 on the subjects in Statistics Denmark.
@@ -159,7 +160,7 @@ result
 
 ~~~
 Response [https://api.statbank.dk/v1/subjects]
-  Date: 2022-04-01 10:45
+  Date: 2022-04-01 10:54
   Status: 200
   Content-Type: text/json; charset=utf-8
   Size: 884 B

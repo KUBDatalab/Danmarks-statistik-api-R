@@ -105,7 +105,11 @@ Three main things:
 
 Statistics Denmark provides four "functions", or "endpoints":
 
-![](images/DSfunctions.png)
+```{r DSfunctions, echo = FALSE, fig.show = "hold", out.width = "100%", fig.alt = " "}
+
+knitr::include_graphics("../fig/DSfunctions.png")
+```
+
 
 The first is the "web"-site we have to send requests to if we want information 
 on the subjects in Statistics Denmark.
